@@ -5,7 +5,11 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
 }
 
-export function Button({ variant, children, ...props }: ButtonProps) {
+export function Button({
+    variant = "primary",
+    children,
+    ...props
+}: ButtonProps) {
     return (
         <button className={`btn btn__${variant}`} {...props}>
             {variant === "spin" ? (
@@ -20,4 +24,3 @@ export function Button({ variant, children, ...props }: ButtonProps) {
         </button>
     );
 }
- 
