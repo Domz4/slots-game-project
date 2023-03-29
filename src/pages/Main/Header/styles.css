@@ -1,0 +1,8 @@
+.header {
+    color: white;
+    display: flex;
+    flex-direction: row;
+}
+.header__stats {
+  list-style: none;
+}
