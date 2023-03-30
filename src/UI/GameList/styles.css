@@ -1,12 +1,30 @@
-.Grid {
-    display: flex;
-    flex-wrap: wrap;
+.grid__container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    align-items: center;
+    justify-items: center;
     height: 100%;
 }
-.grame_tile {
+.game__tile {
     background-color: #ec0023;
     color: white;
+    display: flex;
+    justify-content: center;
+    border-radius: 1.5rem;
+    height: 175px;
+    width: 150px;
+    padding: 1rem;
     font-size: 24px;
-    height: 100px;
-    width: 100px;
+}
+
+@media only screen and (max-width: 600px) {
+    .grid__container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .game__tile {
+        height: 135px;
+        width: 135px;
+        padding: 1rem;
+    }
 }

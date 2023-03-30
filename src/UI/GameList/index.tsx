@@ -1,26 +1,26 @@
-import React, { ReactNode, FC } from "react";
+import React, { FC } from "react";
 import Box from "./Box";
-
 import "./styles.css";
 
 interface GridProps {
-    children: ReactNode;
-    variant: "mobile" | "desktop";
-    size?: "sm" | "md" | "lg";
-    amount: number[];
+    children: React.ReactNode;
+    width: number;
+    height: number;
 }
 
-const Grid: FC<GridProps> = ({
-    size = "md",
-    variant = "desktop",
-    children,
-    amount = Array(6).fill(0),
-    ...props
-}) => {
+const Grid: FC<GridProps> = ({ children, width, height, ...props }) => {
+    const childArray = React.Children.toArray(children);
+    const boxSize = { height: `${height}px`, width: `${width}px ` };
     return (
-        <div className={`grid__container ${variant}`} {...props}>
-            {amount.map((elem: number, idx) => (
-                <Box className={`grame_tile grid__game__${idx}`}>{elem}</Box>
+        <div className="grid__container" {...props}>
+            {childArray.map((child, idx) => (
+                <Box
+                    style={boxSize}
+                    className={`game__tile grid__game__${idx}`}
+                    key={idx}
+                >
+                    {child}
+                </Box>
             ))}
         </div>
     );

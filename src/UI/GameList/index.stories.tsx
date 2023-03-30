@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Grid from ".";
 
 export default {
-    tile: "Games Tiles",
+    title: "UI/Games Tiles",
     component: Grid,
     argTypes: {
         children: {
@@ -14,8 +14,26 @@ export default {
 
 const Template: ComponentStory<typeof Grid> = (args) => <Grid {...args} />;
 
-export const Desktop = Template.bind({});
-
-Desktop.args = {
-    variant: "desktop",
+export const Default = Template.bind({});
+Default.args = {
+    height: 130,
+    width: 130,
+    children: [
+        <div>
+            <img src="" alt="" />
+            <span>box 1</span>
+        </div>,
+        <div>
+            <img src="" alt="" />
+            <span>box 2</span>
+        </div>,
+        <div>
+            <img src="" alt="" />
+            <span>box 3</span>
+        </div>,
+        <div>
+            <img src="" alt="" />
+            <span>box 4</span>
+        </div>,
+    ],
 };
