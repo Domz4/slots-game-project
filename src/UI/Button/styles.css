@@ -2,6 +2,12 @@
     --spin: #ec0023;
     --primary: #111215;
     --secondary: #f3f3f3;
+    --sm-font-size: 12px;
+    --sm-padding: 0.8rem 1.5rem;
+    --md-font-size: 14px;
+    --md-padding: 1.2rem 2rem;
+    --lg-font-size: 16px;
+    --lg-padding: 1.5rem 3rem;
 }
 
 .btn {
@@ -19,12 +25,11 @@
     font-weight: bold;
 }
 .btn__primary {
-    padding: 1rem 2rem;
     color: var(--secondary);
     background: var(--primary);
     border-radius: 1rem;
     font-size: 1.1rem;
-    border: dashed 3px var(--secondary);
+    border: solid 3px var(--secondary);
 }
 
 .btn__secondary {
@@ -33,9 +38,21 @@
     font-size: 1.1rem;
     color: var(--primary);
     background: var(--secondary);
-    border: dashed 3px var(--primary);
+    border: solid 3px var(--primary);
 }
 
+.btn__sm {
+    font-size: var(--sm-font-size);
+    padding: var(--sm-padding);
+}
+.btn__md {
+    font-size: var(--md-font-size);
+    padding: var(--md-padding);
+}
+.btn__lg {
+    font-size: var(--lg-font-size);
+    padding: var(--lg-padding);
+}
 .btn__shadow__spin {
     position: absolute;
     top: 0;
@@ -68,7 +85,6 @@
 .btn__front__spin {
     display: block;
     position: relative;
-    padding: 1rem 2rem;
     border-radius: 0.9rem;
     font-size: 1.1rem;
     color: white;
@@ -76,13 +92,6 @@
     will-change: transform;
     transform: translateY(-4px);
     transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
-}
-
-@media (min-width: 768px) {
-    .btn__front__spin {
-        font-size: 1.25rem;
-        padding: 12px 42px;
-    }
 }
 
 .btn__spin:hover {

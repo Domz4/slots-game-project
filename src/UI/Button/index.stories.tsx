@@ -1,18 +1,22 @@
 import React from "react";
-import { Meta, Story } from "@storybook/react";
-import { Button, ButtonProps } from "./index";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Button } from ".";
 
-const meta: Meta = { 
+export default {
     title: "Button",
     component: Button,
-};
-export default meta;
+    argTypes: {
+        children: {
+            defaultValue: "Default text",
+        },
+    },
+} as ComponentMeta<typeof Button>;
 
-const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 
-export const Spin = () => Template.bind({});
-export const Primary = () => Template.bind({});
-export const Secondary = () => Template.bind({});
+export const Spin = Template.bind({});
+export const Primary = Template.bind({});
+export const Secondary = Template.bind({});
 
 Spin.args = {
     variant: "spin",

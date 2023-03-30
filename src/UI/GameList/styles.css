@@ -1,0 +1,12 @@
+.Grid {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+}
+.grame_tile {
+    background-color: #ec0023;
+    color: white;
+    font-size: 24px;
+    height: 100px;
+    width: 100px;
+}
