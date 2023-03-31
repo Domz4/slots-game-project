@@ -5,9 +5,6 @@ import LoadingOverlay from ".";
 export default {
     title: "UI/LoadingOverlay",
     component: LoadingOverlay,
-    argTypes: {
-        borderColor: { control: "color" },
-    },
 } as ComponentMeta<typeof LoadingOverlay>;
 
 const Template: ComponentStory<typeof LoadingOverlay> = (args) => (

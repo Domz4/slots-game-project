@@ -19,19 +19,19 @@ Default.args = {
     height: 130,
     width: 130,
     children: [
-        <div>
+        <div key={Math.random()}>
             <img src="" alt="" />
             <span>box 1</span>
         </div>,
-        <div>
+        <div key={Math.random()}>
             <img src="" alt="" />
             <span>box 2</span>
         </div>,
-        <div>
+        <div key={Math.random()}>
             <img src="" alt="" />
             <span>box 3</span>
         </div>,
-        <div>
+        <div key={Math.random()}>
             <img src="" alt="" />
             <span>box 4</span>
         </div>,

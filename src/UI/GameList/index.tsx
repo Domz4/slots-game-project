@@ -17,7 +17,7 @@ const Grid: FC<GridProps> = ({ children, width, height, ...props }) => {
                 <Box
                     style={boxSize}
                     className={`game__tile grid__game__${idx}`}
-                    key={idx}
+                    key={Math.random()}
                 >
                     {child}
                 </Box>
