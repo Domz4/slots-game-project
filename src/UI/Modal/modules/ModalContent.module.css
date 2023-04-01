@@ -4,16 +4,16 @@
     left: 50%;
     width: min(90%, 600px, 90vw);
     max-height: 80vh;
-    z-index: var(--overlay-index);
+    z-index: 9999;
     display: flex;
     justify-content: space-between;
     transform: translate(-50%, -50%);
     flex-direction: column;
-    background-color: var(--body-base);
+    background-color: #20232a;
     border-radius: 1rem;
     box-shadow: rgba(0, 0, 0, 0.26) 0 15px 50px 20px;
     overflow: hidden;
-    border: 1px solid var(--body-highlight);
+    border: 1px solid #323c53;
 }
 
 .content {
