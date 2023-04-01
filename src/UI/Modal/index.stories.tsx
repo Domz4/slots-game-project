@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Modal } from "./Modal";
+import { Button } from "../Button";
 
 export default {
     title: "UI/Modal",
@@ -16,8 +17,15 @@ const Template: ComponentStory<typeof Modal> = (args) => {
 
     return (
         <>
-            <button onClick={() => setVisible(true)}>Open Modal</button>
-            <Modal {...args} visible={visible} onClose={handleClose}>
+            <Button variant="spin" onClick={() => setVisible(true)}>
+                Open Modal
+            </Button>
+            <Modal
+                {...args}
+                visible={visible}
+                onClose={handleClose}
+                className="modal"
+            >
                 <p>Modal Content</p>
             </Modal>
         </>

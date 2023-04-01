@@ -1,4 +1,4 @@
-import * as classes from "./modules/ModalHeader.module.css";
+import classes from "./modules/ModalHeader.module.css";
 
 type Props = {
     children: React.ReactNode;
@@ -12,8 +12,7 @@ export const ModalHeader = ({ children, onClose }: Props) => {
                 aria-label="Close"
                 className={classes.closeButton}
                 onClick={onClose}
-                // close icon?
-            ></button>
+            >close</button>
         </header>
     );
 };

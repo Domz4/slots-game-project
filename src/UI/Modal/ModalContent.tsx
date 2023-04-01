@@ -1,4 +1,4 @@
-import * as classes from "./modules/ModalContent.module.css";
+import  classes from "./modules/ModalContent.module.css";
 import { ModalHeader } from "./ModalHeader";
 import { useEffect } from "react";
 

@@ -28,3 +28,6 @@
     background-color: hsla(252, 43%, 7%, 0.576);
     backdrop-filter: blur(20px);
 }
+.body {
+    background-color: red;
+}

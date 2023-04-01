@@ -1,8 +1,8 @@
 import { CSSTransition } from "react-transition-group";
 import React, { HTMLAttributes, ReactNode } from "react";
 import ReactDOM from "react-dom";
-import * as styles from "./modules/Modal.module.css";
-import * as ModalAnimation from "./modules/ModalAnimation.module.css";
+import styles from "./modules/Modal.module.css";
+import ModalAnimation from "./modules/ModalAnimation.module.css";
 import { ModalContent } from "./ModalContent";
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
