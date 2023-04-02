@@ -33,7 +33,7 @@ export const Modal = ({
                 in={visible}
                 mountOnEnter
                 unmountOnExit
-                timeout={300}
+                timeout={200}
             >
                 <div className={styles.backdrop} onClick={onClose} />
             </CSSTransition>
@@ -43,7 +43,7 @@ export const Modal = ({
                 in={visible}
                 mountOnEnter
                 unmountOnExit
-                timeout={300}
+                timeout={200}
             >
                 <ModalContent
                     header={header}

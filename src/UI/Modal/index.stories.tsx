@@ -17,7 +17,7 @@ const Template: ComponentStory<typeof Modal> = (args) => {
 
     return (
         <>
-            <Button variant="spin" onClick={() => setVisible(true)}>
+            <Button variant="primary" onClick={() => setVisible(true)}>
                 Open Modal
             </Button>
             <Modal

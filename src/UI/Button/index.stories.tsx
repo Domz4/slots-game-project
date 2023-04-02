@@ -14,14 +14,10 @@ export default {
 
 const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 
-export const Spin = Template.bind({});
 export const Primary = Template.bind({});
 export const Secondary = Template.bind({});
+export const SecondaryAlt = Template.bind({});
 
-Spin.args = {
-    variant: "spin",
-    children: "Spin!",
-};
 Primary.args = {
     variant: "primary",
     children: "primary!",
@@ -29,4 +25,8 @@ Primary.args = {
 Secondary.args = {
     variant: "secondary",
     children: "secondary!",
+};
+SecondaryAlt.args = {
+    variant: "secondary-alt",
+    children: "secondary-alt!",
 };

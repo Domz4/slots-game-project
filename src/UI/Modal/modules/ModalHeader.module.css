@@ -1,5 +1,5 @@
 .header {
-    background-color: #1c1e22;
+    background-color: #333741;
     gap: 1rem;
     display: flex;
     justify-content: space-between;
@@ -23,7 +23,7 @@
 }
 
 .closeButton {
-    color: purple;
+    color: white;
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: none;

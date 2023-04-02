@@ -1,9 +1,9 @@
 import React, { HTMLAttributes, ReactNode } from "react";
 import "./styles.css";
 export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
-    variant: "primary" | "secondary" | "spin";
+    variant: "secondary" | "secondary-alt" | "primary" | "empty";
     children: ReactNode;
-    size?: "sm" | "md" | "lg";
+    size?: "mini" | "sm" | "md" | "lg";
     backgroundColor?: string;
 }
 
@@ -13,7 +13,7 @@ export function Button({
     children,
     ...props
 }: ButtonProps) {
-    return variant === "spin" ? (
+    return variant === "primary" ? (
         <button type="button" className={`btn btn__${variant}`} {...props}>
             <span className={`btn__shadow__${variant}`}></span>
             <span className={`btn__edge__${variant}`}></span>
