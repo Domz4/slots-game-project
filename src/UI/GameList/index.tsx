@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Box from "./Box";
-import "./styles.css";
+import styles from "./styles.module.css";
 
 interface GridProps {
     children: React.ReactNode;
@@ -12,11 +12,11 @@ const Grid: FC<GridProps> = ({ children, width, height, ...props }) => {
     const childArray = React.Children.toArray(children);
     const boxSize = { height: `${height}px`, width: `${width}px ` };
     return (
-        <div className="grid__container" {...props}>
-            {childArray.map((child, idx) => (
+        <div className={styles.container} {...props}>
+            {childArray.map((child) => (
                 <Box
                     style={boxSize}
-                    className={`game__tile grid__game__${idx}`}
+                    className={styles.tile}
                     key={Math.random()}
                 >
                     {child}

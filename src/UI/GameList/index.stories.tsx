@@ -16,8 +16,8 @@ const Template: ComponentStory<typeof Grid> = (args) => <Grid {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-    height: 130,
-    width: 130,
+    height: 180,
+    width: 180,
     children: [
         <div key={Math.random()}>
             <img src="" alt="" />
