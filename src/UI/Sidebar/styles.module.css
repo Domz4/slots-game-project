@@ -1,0 +1,25 @@
+.sidebar {
+    background-color: #111215;
+    color: white;
+    position: sticky;
+    width: 100px;
+    height: 100vh;
+    padding: 30px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    z-index: 10;
+}
+.icons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.icon:hover {
+    color: red;
+    transition: 250ms;
+}
