@@ -20,6 +20,6 @@
     width: 100%;
 }
 .icon:hover {
-    color: red;
+    filter: invert(1);
     transition: 250ms;
 }

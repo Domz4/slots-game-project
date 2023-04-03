@@ -1,5 +1,6 @@
 # To do:
 
--   [] Fix css animation
--   [] Navbar component
--   []
+-   [x] Sidebar component
+-   [] Fix css animation on modal comp
+-   [] Fix the hover on svg to red on sidebar comp
+-   [] 
