@@ -9,11 +9,11 @@
     justify-content: space-between;
     transform: translate(-50%, -50%);
     flex-direction: column;
-    background-color: #20232a;
+    color: white;
+    background-color: #111215;
     border-radius: 1rem;
-    box-shadow: rgba(0, 0, 0, 0.26) 0 15px 50px 20px;
+    box-shadow: rgba(0, 0, 0, 0.36) 0 15px 100px 30px;
     overflow: hidden;
-    border: 1px solid #323c53;
 }
 
 .content {

@@ -15,11 +15,11 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
     contentClassName?: string;
     className?: string;
 }
-const overlayRoot = document.getElementById("overlay-root");
+// const overlayRoot = document.getElementById("overlay-root");
 
-if (!overlayRoot) {
-    throw new Error("No overlay root element found");
-}
+// if (!overlayRoot) {
+//     throw new Error("Root element found");
+// }
 
 export const Modal = ({
     title,
@@ -38,7 +38,7 @@ export const Modal = ({
                 in={visible}
                 mountOnEnter
                 unmountOnExit
-                timeout={200}
+                timeout={300}
             >
                 <div className={styles.backdrop} onClick={onClose} />
             </CSSTransition>
@@ -48,7 +48,7 @@ export const Modal = ({
                 in={visible}
                 mountOnEnter
                 unmountOnExit
-                timeout={200}
+                timeout={300}
             >
                 <ModalContent
                     header={header}
@@ -61,6 +61,6 @@ export const Modal = ({
                 </ModalContent>
             </CSSTransition>
         </>,
-        overlayRoot
+        document.body
     );
 };
