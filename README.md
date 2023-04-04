@@ -1,8 +1,16 @@
 # To do:
 
 -   [x] Sidebar component
--   [X] Fix css animation on modal comp
+-   [x] Fix css animation on modal comp
 -   [] Fix the hover on svg to red on sidebar comp
+-   [] Info ui component
 -   [] Make main page
--   [] Add game
--   [] 
+-   [] Add game 
+-   [] Redux state
+## Backend
+
+-   [] User auth
+-   [] Database
+-   [] Endpoints
+-   [] Game logic
+-   [] Web socket
