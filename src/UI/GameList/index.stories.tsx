@@ -35,5 +35,9 @@ Default.args = {
             <img src="" alt="" />
             <span>box 4</span>
         </div>,
+        <div key={Math.random()}>
+            <img src="" alt="" />
+            <span>box 5</span>
+        </div>,
     ],
 };

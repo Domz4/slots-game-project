@@ -1,3 +1,55 @@
-export const Main = () => {
-    return;
+import { useState } from "react";
+import { Button } from "../../UI/Button";
+import Grid from "../../UI/GameList";
+import { Header } from "../../UI/Header";
+import LoadingOverlay from "../../UI/Loading";
+import { Sidebar } from "../../UI/Sidebar";
+
+export const HomePage = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSettings = () => {
+        console.log("Settings clicked");
+    };
+
+    const handleGame = () => {
+        console.log("Game clicked");
+    };
+
+    const handleStats = () => {
+        console.log("Stats clicked");
+    };
+
+    const handleLogin = () => {
+        console.log("Login clicked");
+    };
+
+    const handleLogout = () => {
+        console.log("Logout clicked");
+    };
+
+    const handleRegister = () => {
+        console.log("Register clicked");
+    };
+
+    return (
+        <div className="App">
+            <Header
+                onLogin={handleLogin}
+                onLogout={handleLogout}
+                onRegister={handleRegister}
+            />
+            <Sidebar
+                onSettings={handleSettings}
+                onGame={handleGame}
+                onStats={handleStats}
+            />
+            <LoadingOverlay isLoading={isLoading} />
+            <main>
+                <Grid width={100} height={100}>
+                  <div className="first"></div>
+                </Grid>
+            </main>
+        </div>
+    );
 };

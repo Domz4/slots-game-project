@@ -13,6 +13,6 @@ const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isLoading }) => {
         </div>
     );
 
-    return isLoading ? createPortal(overlay, document.body!) : null;
+    return isLoading ? createPortal(overlay, document.body) : null;
 };
 export default LoadingOverlay;

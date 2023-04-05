@@ -9,19 +9,12 @@ html,
 #root {
     height: 100%;
 }
-#root {
-    padding: 2rem;
-}
+
 body {
     background: repeating-linear-gradient(
         45deg,
-        rgb(33, 33, 33) 7px,
-        #272727 0,
-        #212121 15px
+        #111215 7px,
+        #14151a 0,
+        #111215 300px
     );
-}
-.App {
-    height: 100%;
-    border-radius: 2rem;
-    border: dashed #c0c0c0;
 }

@@ -16,7 +16,10 @@ export const ProgressBar = ({
     return (
         <div className={styles.bar} {...props}>
             {children}
-            <div style={{ width: `${progress}%` }} className={styles.filter}>
+            <div
+                style={{ width: `${progress * 100 / total}%` }}
+                className={styles.filter}
+            >
                 <span className={styles.label}>{`${progress}/${total}`}</span>
             </div>
         </div>

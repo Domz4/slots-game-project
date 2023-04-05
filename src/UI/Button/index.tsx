@@ -7,12 +7,12 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
     backgroundColor?: string;
 }
 
-export function Button({
+export const Button = ({
     size = "md",
     variant,
     children,
     ...props
-}: ButtonProps) {
+}: ButtonProps) => {
     return variant === "primary" ? (
         <button type="button" className={`btn btn__${variant}`} {...props}>
             <span className={`btn__shadow__${variant}`}></span>
@@ -30,4 +30,4 @@ export function Button({
             {children}
         </button>
     );
-}
+};
