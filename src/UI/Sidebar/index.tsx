@@ -5,10 +5,10 @@ import settingsIcon from "../../assets/settingsIcon.svg";
 import statsIcon from "../../assets/statsIcon.svg";
 
 interface SidebarProps {
-    children: React.ReactNode;
-    onSettings: () => void;
-    onGame: () => void;
-    onStats: () => void;
+    children?: React.ReactNode;
+    onSettings?: () => void;
+    onGame?: () => void;
+    onStats?: () => void;
 }
 
 export const Sidebar = ({
