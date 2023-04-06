@@ -1,5 +1,6 @@
 .header {
     display: grid;
+    position: absolute;
     color: white;
     gap: 1rem;
     grid-template-columns: repeat(3, 1fr);
@@ -15,12 +16,12 @@
     gap: 1rem;
     margin: auto 12px;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
 }
 .logo {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     margin-left: 10px;
 }

@@ -1,6 +1,5 @@
 .sidebar {
     background-color: #111215;
-    color: white;
     position: sticky;
     width: 100px;
     height: 100vh;
@@ -19,7 +18,12 @@
     height: 100%;
     width: 100%;
 }
+
+.icon {
+    color:white;
+    transition: color 0.3s ease;
+}
+
 .icon:hover {
-    filter: invert(1);
-    transition: 250ms;
+    color: red;
 }

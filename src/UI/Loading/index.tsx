@@ -1,6 +1,6 @@
 import React from "react";
-import { createPortal } from "react-dom";
 import "./styles.css";
+import { createPortal } from "react-dom";
 
 interface LoadingOverlayProps {
     isLoading: boolean;

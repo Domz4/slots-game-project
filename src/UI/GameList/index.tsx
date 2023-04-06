@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, HTMLAttributes } from "react";
 import Box from "./Box";
 import styles from "./styles.module.css";
 
-interface GridProps {
+interface GridProps extends HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     width: number;
     height: number;
