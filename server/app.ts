@@ -16,7 +16,7 @@ mongoose
   .catch((error) => console.log("Error connecting to MongoDB:", error));
 
 app.use(express.json());
-app.use("/api/users", userRoutes); // Add user routes
+app.use("/api/users", userRoutes);
 
 app.use((err: ErrorHandler, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500).json({ error: err.message });

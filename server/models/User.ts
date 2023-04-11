@@ -9,7 +9,7 @@ export interface IUser extends Document {
 }
 
 const UserSchema: Schema = new Schema({
-    username: { type: String, required: true, unique: true },
+    username: { type: String, required: true, unique: true, minlength: 4 },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 });
@@ -22,7 +22,7 @@ UserSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.methods.isValidPassword = function (
+UserSchema.methods.comparePassword = function (
     password: string
 ): Promise<boolean> {
     return bcrypt.compare(password, this.password);
