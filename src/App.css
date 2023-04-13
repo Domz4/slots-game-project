@@ -1,20 +1,17 @@
 *,
 *::after,
 *::before {
-    margin: 0;
-    box-sizing: border-box;
+  margin: 0;
+  box-sizing: border-box;
 }
 body,
 html,
-#root {
-    height: 100%;
+#root,
+.App {
+  height: 100%;
 }
 
 body {
-    background: repeating-linear-gradient(
-        45deg,
-        #111215 7px,
-        #14151a 0,
-        #111215 300px
-    );
+  background: repeating-linear-gradient(45deg, #111215 7px, #14151a 0, #111215 300px);
+  background-attachment: fixed;
 }

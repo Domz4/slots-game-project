@@ -1,29 +1,27 @@
 .sidebar {
-    background-color: #111215;
-    position: sticky;
-    width: 100px;
-    height: 100vh;
-    padding: 30px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
-    z-index: 10;
+  background-color: #111215;
+  position: sticky;
+  bottom: 0;
+  width: 100px;
+  height: 100vh;
+  padding: 30px 0;
+  overflow: hidden;
+  z-index: 10;
 }
 .icons {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 .icon {
-    color:white;
-    transition: color 0.3s ease;
+  color: white;
+  transition: color 0.2s ease;
 }
 
 .icon:hover {
-    color: red;
+  color: #ec0023;
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "../../UI/Button";
-import Grid from "../../UI/GameList";
+import Grid from "../../UI/Grid";
 import { Header } from "../../UI/Header";
 import LoadingOverlay from "../../UI/Loading";
 import { Sidebar } from "../../UI/Sidebar";
@@ -24,25 +24,29 @@ export const HomePage = () => {
   const handleLogin = () => {
     console.log("Login clicked");
   };
-
   const handleLogout = () => {
     console.log("Logout clicked");
   };
   const handleRegister = () => {
     console.log("Register clicked");
   };
+  const mockFill = (num: number) => {
+    return Array(num)
+      .fill(0)
+      .map((_, idx) => (
+        <div key={Math.random()} className="box">
+          {idx}
+        </div>
+      ));
+  };
   return (
-    <div className="App">
-      <main className={styles.container}>
-        <Header onLogin={handleLogin} onLogout={handleLogout} onRegister={handleRegister} />
-        <Sidebar onSettings={handleSettings} onGame={handleGame} onStats={handleStats} />
-        <LoadingOverlay isLoading={isLoading} />
-        <Grid width={100} height={100}>
-          <div className="first">first</div>
-          <div className="first">first</div>
-          <div className="first">first</div>
-        </Grid>
-      </main>
-    </div>
+    <>
+      <Header onLogin={handleLogin} onLogout={handleLogout} onRegister={handleRegister} />
+      <LoadingOverlay isLoading={isLoading} />
+      <Grid width={150} height={150} className={styles.gridWrapper}>
+        {mockFill(30)}
+      </Grid>
+      <Sidebar onSettings={handleSettings} onGame={handleGame} onStats={handleStats} />
+    </>
   );
 };
