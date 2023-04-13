@@ -4,17 +4,16 @@ import styles from "./styles.module.css";
 import clsx from "clsx";
 interface GridProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  width: number;
-  height: number;
+  size: number;
 }
 
-const Grid: FC<GridProps> = ({ children, className, width, height, ...props }) => {
+const Grid: FC<GridProps> = ({ children, className, size, ...props }) => {
   const childArray = React.Children.toArray(children);
-  const boxSize = { height: `${height}px`, width: `${width}px ` };
+  const boxSize = { height: `${size}px`, width: `${size}px ` };
   return (
     <div className={clsx(styles.container, className)} {...props}>
       {childArray.map((child) => (
-        <Box style={boxSize} className={styles.tile} key={Math.random()}>
+        <Box style={boxSize} className={styles.box} key={Math.random()}>
           {child}
         </Box>
       ))}

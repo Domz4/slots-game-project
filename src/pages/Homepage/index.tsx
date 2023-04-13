@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { Button } from "../../UI/Button";
 import Grid from "../../UI/Grid";
 import { Header } from "../../UI/Header";
 import LoadingOverlay from "../../UI/Loading";
 import { Sidebar } from "../../UI/Sidebar";
 import styles from "./styles.module.css";
-
+import { LoginModal } from "../../components/homepage/loginModal";
 export const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const handleSettings = () => {
     console.log("Settings clicked");
   };
@@ -22,8 +21,9 @@ export const HomePage = () => {
   };
 
   const handleLogin = () => {
-    console.log("Login clicked");
+    setLoginModalVisible(!loginModalVisible);
   };
+
   const handleLogout = () => {
     console.log("Logout clicked");
   };
@@ -42,8 +42,9 @@ export const HomePage = () => {
   return (
     <>
       <Header onLogin={handleLogin} onLogout={handleLogout} onRegister={handleRegister} />
+      <LoginModal isVisible={loginModalVisible} onClose={handleLogin} />
       <LoadingOverlay isLoading={isLoading} />
-      <Grid width={150} height={150} className={styles.gridWrapper}>
+      <Grid size={250} className={styles.gridWrapper}>
         {mockFill(30)}
       </Grid>
       <Sidebar onSettings={handleSettings} onGame={handleGame} onStats={handleStats} />

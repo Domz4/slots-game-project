@@ -1,14 +1,14 @@
 import React, { FC, HTMLAttributes, ReactNode } from "react";
 import styles from "./Box.module.css";
 interface BoxProps extends HTMLAttributes<HTMLDivElement> {
-    children?: ReactNode;
+  children?: ReactNode;
 }
 const Box: FC<BoxProps> = ({ children, ...props }) => {
-    return (
-        <div className={styles.Box} {...props}>
-            {children}
-        </div>
-    );
+  return (
+    <div className={styles.Box} {...props}>
+      {children}
+    </div>
+  );
 };
 
 export default Box;
