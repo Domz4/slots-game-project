@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { Button } from "../../UI/Button";
-import Grid from "../../UI/GameList";
+import Grid from "../../UI/Grid";
 import { Header } from "../../UI/Header";
 import LoadingOverlay from "../../UI/Loading";
 import { Sidebar } from "../../UI/Sidebar";
 import styles from "./styles.module.css";
-
+import { LoginModal } from "../../components/homepage/loginModal";
 export const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const handleSettings = () => {
     console.log("Settings clicked");
   };
@@ -22,7 +21,7 @@ export const HomePage = () => {
   };
 
   const handleLogin = () => {
-    console.log("Login clicked");
+    setLoginModalVisible(!loginModalVisible);
   };
 
   const handleLogout = () => {
@@ -31,18 +30,24 @@ export const HomePage = () => {
   const handleRegister = () => {
     console.log("Register clicked");
   };
+  const mockFill = (num: number) => {
+    return Array(num)
+      .fill(0)
+      .map((_, idx) => (
+        <div key={Math.random()} className="box">
+          {idx}
+        </div>
+      ));
+  };
   return (
-    <div className="App">
-      <main className={styles.container}>
-        <Header onLogin={handleLogin} onLogout={handleLogout} onRegister={handleRegister} />
-        <Sidebar onSettings={handleSettings} onGame={handleGame} onStats={handleStats} />
-        <LoadingOverlay isLoading={isLoading} />
-        <Grid width={100} height={100}>
-          <div className="first">first</div>
-          <div className="first">first</div>
-          <div className="first">first</div>
-        </Grid>
-      </main>
-    </div>
+    <>
+      <Header onLogin={handleLogin} onLogout={handleLogout} onRegister={handleRegister} />
+      <LoginModal isVisible={loginModalVisible} onClose={handleLogin} />
+      <LoadingOverlay isLoading={isLoading} />
+      <Grid size={250} className={styles.gridWrapper}>
+        {mockFill(30)}
+      </Grid>
+      <Sidebar onSettings={handleSettings} onGame={handleGame} onStats={handleStats} />
+    </>
   );
 };

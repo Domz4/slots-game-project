@@ -1,5 +1,5 @@
 import { Button } from "../Button";
-import logo from "../../assets/logo-mock.svg";
+import { ReactComponent as Logo } from "../../assets/logo-mock.svg";
 import styles from "./styles.module.css";
 import { HTMLAttributes } from "react";
 
@@ -17,7 +17,7 @@ export const Header = ({ user, onLogin, onLogout, onRegister, ...props }: Header
   return (
     <header className={styles.header} {...props}>
       <a href="/" className={styles.logo}>
-        <img src={logo} alt="logo-image" />
+        <Logo className={styles.logo}></Logo>
       </a>
       {user ? (
         <div className={styles.user}>
