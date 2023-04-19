@@ -1,4 +1,3 @@
-import { CSSTransition } from "react-transition-group";
 import { Backdrop } from "./Backdrop";
 import { ModalContent } from "./ModalContent";
 import React, { HTMLAttributes, ReactNode } from "react";
