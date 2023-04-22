@@ -3,16 +3,22 @@ import "./styles.css";
 import { createPortal } from "react-dom";
 
 interface LoadingOverlayProps {
-    isLoading: boolean;
+  isLoading: boolean;
 }
 
 const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isLoading }) => {
-    const overlay = (
-        <div className="loader-overlay">
-            <span className="loader" />
-        </div>
-    );
+  const overlayRoot = document.getElementById("overlay-root");
 
-    return isLoading ? createPortal(overlay, document.body) : null;
+  if (!overlayRoot) {
+    throw new Error("Root element found");
+  }
+
+  const overlay = (
+    <div className="loader-overlay">
+      <span className="loader" />
+    </div>
+  );
+
+  return isLoading ? createPortal(overlay, overlayRoot) : null;
 };
 export default LoadingOverlay;

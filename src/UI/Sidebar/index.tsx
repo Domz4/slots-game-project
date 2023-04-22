@@ -3,6 +3,7 @@ import styles from "./styles.module.css";
 import { ReactComponent as GameIcon } from "../../assets/gameIcon.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/settingsIcon.svg";
 import { ReactComponent as StatsIcon } from "../../assets/statsIcon.svg";
+
 interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   onSettings?: () => void;

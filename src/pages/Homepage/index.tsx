@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Grid from "../../UI/Grid";
 import { Header } from "../../UI/Header";
 import LoadingOverlay from "../../UI/Loading";
 import { Sidebar } from "../../UI/Sidebar";
 import styles from "./styles.module.css";
-import { LoginModal } from "../../components/homepage/loginModal";
+import { AuthForm } from "../../components/homepage/authForm";
+
 export const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
@@ -20,15 +21,14 @@ export const HomePage = () => {
     console.log("Stats clicked");
   };
 
-  const handleLogin = () => {
-    setLoginModalVisible(!loginModalVisible);
+  const toggleAuth = () => {
+    setTimeout(() => {
+      setLoginModalVisible(!loginModalVisible);
+    }, 100);
   };
 
   const handleLogout = () => {
     console.log("Logout clicked");
-  };
-  const handleRegister = () => {
-    console.log("Register clicked");
   };
   const mockFill = (num: number) => {
     return Array(num)
@@ -41,11 +41,11 @@ export const HomePage = () => {
   };
   return (
     <>
-      <Header onLogin={handleLogin} onLogout={handleLogout} onRegister={handleRegister} />
-      <LoginModal isVisible={loginModalVisible} onClose={handleLogin} />
+      <Header onLogin={toggleAuth} onLogout={handleLogout} onRegister={toggleAuth} />
+      <AuthForm isVisible={loginModalVisible} toggleAuth={toggleAuth} type={"login"} />
       <LoadingOverlay isLoading={isLoading} />
       <Grid size={250} className={styles.gridWrapper}>
-        {mockFill(30)}
+        {mockFill(10)}
       </Grid>
       <Sidebar onSettings={handleSettings} onGame={handleGame} onStats={handleStats} />
     </>
