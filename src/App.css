@@ -9,8 +9,8 @@ html,
 #root,
 .App {
   height: 100%;
+  overflow-x: hidden;
 }
-
 body {
   background: repeating-linear-gradient(45deg, #111215 7px, #14151a 0, #111215 300px);
   background-attachment: fixed;

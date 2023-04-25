@@ -5,24 +5,21 @@ import { ErrorHandler } from "../utils/errorHandler";
 import { IUserInput } from "../types/types";
 
 export const registerUserService = async (userData: IUserInput) => {
-    const user = new User(userData);
-    await user.save();
-    return user;
+  const user = new User(userData);
+  await user.save();
+  return user;
 };
 
 export const loginUserService = async (email: string, password: string) => {
-    const user = await User.findOne({ email });
-    if (!user) {
-        throw new ErrorHandler(401, "Invalid email or password");
-    }
+  const user = await User.findOne({ email });
+  const correctPassword = await user?.comparePassword(password);
 
-    const correctPassword = await user.comparePassword(password);
-    if (!correctPassword) {
-        throw new ErrorHandler(401, "Invalid email or password");
-    }
+  if (!user || !correctPassword) {
+    throw new ErrorHandler(401, "Invalid email or password");
+  }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, {
-        expiresIn: "1h",
-    });
-    return token;
+  const token = jwt.sign({ id: user._id }, JWT_SECRET, {
+    expiresIn: "1h",
+  });
+  return token;
 };
