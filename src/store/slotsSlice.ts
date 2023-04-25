@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Texture } from "pixi.js";
 import { ReelData } from "../components/game/types/types";
+import { RootState } from "./store";
 
 interface SlotsState {
   isAssetsLoading: boolean;

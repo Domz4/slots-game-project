@@ -1,32 +1,40 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "no-nested-ternary": "error",
+    "eqeqeq": "error",
+    "react/no-array-index-key": "error",
+    "react/jsx-handler-names": "off",
+    "react/jsx-max-depth": [
+      "error",
+      {
+        "max": 4
+      }
     ],
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "parser": "@typescript-eslint/parser",
-    "plugins": ["react", "@typescript-eslint"],
-    "rules": {
-        "react/jsx-uses-react": "off",
-        "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off",
-        "no-nested-ternary": "error",
-        "eqeqeq": "error",
-        "react/no-array-index-key": "error",
-        "react/jsx-handler-names": "off",
-        "react/jsx-max-depth": ["error", { "max": 4 }],
-        "no-mixed-spaces-and-tabs": "off"
-    }
+    "no-mixed-spaces-and-tabs": "off"
+  }
 }
