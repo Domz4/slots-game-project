@@ -1,25 +1,20 @@
-import { FC, useEffect, useRef, useCallback, useState } from "react";
-import { Stage, Sprite } from "@pixi/react";
+import { useEffect, useCallback, useState } from "react";
+import { Stage } from "@pixi/react";
 import { MainGame } from "./MainGameComp";
 import { getScreenSize } from "./GameScreen";
 import styles from "./styles.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { setTextures, setIsAssetsLoading, setReels } from "../../../store/slotsSlice";
+import { setTextures, setIsAssetsLoading } from "../../../store/slotsSlice";
 import { RootState } from "../../../store/store";
 import { assetsPath } from "../data/assetsPath";
 import { Texture, Assets } from "pixi.js";
 
-interface GameProps {
-  title: string;
-}
-
-export const SlotsGame: FC<GameProps> = ({ title }) => {
+export const GameSetup = () => {
   const [screenSize, setScreenSize] = useState(getScreenSize());
 
   const dispatch = useDispatch();
   const textures = useSelector((state: RootState) => state.slots.textures);
   const isLoading = useSelector((state: RootState) => state.slots.isAssetsLoading);
-  const reels = useSelector((state: RootState) => state.slots.reels);
 
   useEffect(() => {
     const loadAssets = async () => {
