@@ -9,15 +9,26 @@
   margin-left: 50px;
 }
 .box {
-  background-color: #ec0023;
+  background-color: transparent;
   color: white;
   display: flex;
   justify-content: center;
   border-radius: 1.5rem;
-  padding: 1rem;
   font-size: 24px;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+.box:hover {
+  border: solid 1px red;
+  box-shadow: 3px 3px black;
+  transform: translate(-5px, -5px);
+  transition: transform 200ms, box-shadow 200ms;
 }
 
+.box:active {
+  transform: translateY(-2px);
+  box-shadow: 0 0 black;
+  transition: transform 34ms, box-shadow 34ms;
+}
 @media only screen and (max-width: 700px) {
   .container {
     grid-template-columns: repeat(1, 1fr);

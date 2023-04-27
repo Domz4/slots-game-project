@@ -5,6 +5,7 @@ import LoadingOverlay from "../../UI/Loading";
 import { Sidebar } from "../../UI/Sidebar";
 import styles from "./styles.module.css";
 import { AuthForm } from "../../components/homepage/authForm";
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,12 +40,23 @@ export const HomePage = () => {
         </div>
       ));
   };
+  const handleGameStart = () => {
+    console.log("sdajaskdj");
+  };
   return (
     <>
       <Header onLogin={toggleAuth} onLogout={handleLogout} onRegister={toggleAuth} />
       <AuthForm isVisible={loginModalVisible} toggleAuth={toggleAuth} type={"login"} />
       <LoadingOverlay isLoading={isLoading} />
       <Grid size={250} className={styles.gridWrapper}>
+        <Link to="/game">
+          <img
+            src="http://localhost:3000/Assets/slots-icon.webp"
+            className={styles.image}
+            onClick={handleGameStart}
+          />
+        </Link>
+
         {mockFill(10)}
       </Grid>
       <Sidebar onSettings={handleSettings} onGame={handleGame} onStats={handleStats} />

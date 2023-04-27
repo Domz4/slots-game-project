@@ -9,7 +9,11 @@ import { RootState } from "../../../store/store";
 import { assetsPath } from "../data/assetsPath";
 import { Texture, Assets } from "pixi.js";
 
-export const GameSetup = () => {
+interface GameSetupProps {
+  className: string;
+  children?: React.ReactNode;
+}
+export const GameSetup: React.FC<GameSetupProps> = () => {
   const [screenSize, setScreenSize] = useState(getScreenSize());
 
   const dispatch = useDispatch();
@@ -20,7 +24,8 @@ export const GameSetup = () => {
     const loadAssets = async () => {
       dispatch(setIsAssetsLoading(true));
       await assetsPath();
-      const assets: Texture[] = Object.values(await Assets.loadBundle("neo-slots"));
+      const loadedAssets = await Assets.loadBundle("neo-slots");
+      const assets: Texture[] = Object.values(loadedAssets);
       dispatch(setTextures(textures.concat(...assets)));
       dispatch(setIsAssetsLoading(false));
     };
@@ -43,13 +48,15 @@ export const GameSetup = () => {
   const stageH = screenSize ? screenSize.height * 0.8 : 800;
 
   return (
-    <Stage
-      className={styles.canvas}
-      width={stageW}
-      height={stageH}
-      options={{ autoDensity: true, backgroundColor: 0x01262a }}
-    >
-      <MainGame textures={textures} isLoading={isLoading} />
-    </Stage>
+    <div className={styles.container}>
+      <Stage
+        width={stageW}
+        height={stageH}
+        className={styles.canvas}
+        options={{ autoDensity: true, backgroundColor: 0x0000, backgroundAlpha: 0.1 }}
+      >
+        <MainGame textures={textures} stageH={stageH} stageW={stageW} />
+      </Stage>
+    </div>
   );
 };

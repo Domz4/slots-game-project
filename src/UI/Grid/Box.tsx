@@ -5,7 +5,7 @@ interface BoxProps extends HTMLAttributes<HTMLDivElement> {
 }
 const Box: FC<BoxProps> = ({ children, ...props }) => {
   return (
-    <div className={styles.Box} {...props}>
+    <div className={styles.box} {...props}>
       {children}
     </div>
   );

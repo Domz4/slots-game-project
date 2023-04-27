@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useRef, useEffect, useState } from "react";
 import { Container, Sprite } from "@pixi/react";
 import { BlurFilter, Texture, Graphics } from "pixi.js";
@@ -43,13 +44,6 @@ export const Reel: React.FC<ReelProps> = ({ slotTextures, REEL_WIDTH, SYMBOL_SIZ
     setReels(newReels);
   }, [slotTextures]);
 
-  useEffect(() => {
-    const newMask = new Graphics();
-    newMask.beginFill(0xffffff);
-    newMask.drawRect(0, 0, REEL_WIDTH * reels.length, SYMBOL_SIZE * 3.1);
-    newMask.endFill();
-    setMask(newMask);
-  }, [reels.length, REEL_WIDTH, SYMBOL_SIZE]);
   const reelsComplete = () => {
     setRunning(false);
   };

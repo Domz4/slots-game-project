@@ -1,9 +1,6 @@
-.container {
+.gamescreen {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-}
-.canvas {
-  border-radius: 30px;
+  border: solid 1px red;
 }
