@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from "react";
-import { Stage } from "@pixi/react";
 import { MainGame } from "./MainGameComp";
+import { Stage } from "../utils/ContexBridge";
 import { getScreenSize } from "./GameScreen";
 import styles from "./styles.module.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,7 +18,6 @@ export const GameSetup: React.FC<GameSetupProps> = () => {
 
   const dispatch = useDispatch();
   const textures = useSelector((state: RootState) => state.slots.textures);
-  const isLoading = useSelector((state: RootState) => state.slots.isAssetsLoading);
 
   useEffect(() => {
     const loadAssets = async () => {

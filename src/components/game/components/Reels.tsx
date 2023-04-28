@@ -17,7 +17,7 @@ export const Reel: React.FC<ReelProps> = ({ slotTextures, REEL_WIDTH, SYMBOL_SIZ
   const [running, setRunning] = useState(false);
   const [mask, setMask] = useState<Graphics | null>(null);
   const reelContainer = useRef(null);
-
+  console.log(reels);
   useEffect(() => {
     const newReels: ReelData[] = [];
     for (let i = 0; i < 5; i++) {
@@ -85,10 +85,17 @@ export const Reel: React.FC<ReelProps> = ({ slotTextures, REEL_WIDTH, SYMBOL_SIZ
     }
   };
 
+  useEffect(() => {
+    const g = new Graphics();
+    g.beginFill(0xffffff);
+    g.drawRect(0, 100, REEL_WIDTH * 10, REEL_WIDTH * 2.9);
+    g.endFill();
+    setMask(g);
+  }, []);
+
   return (
     <>
-      <PlayButton x={400} y={600} onClick={startPlay} />
-      <Container ref={reelContainer} x={100} y={100} mask={mask}>
+      <Container x={50} y={120} ref={reelContainer} mask={mask}>
         {reels.map((reel, index) => (
           <Container key={index} x={index * REEL_WIDTH} filters={[reel.blur]}>
             {reel.symbols.map((symbol, idx) => (
@@ -100,6 +107,8 @@ export const Reel: React.FC<ReelProps> = ({ slotTextures, REEL_WIDTH, SYMBOL_SIZ
                 width={150}
                 height={150}
                 anchor={0.5}
+                interactive={true}
+                onclick={startPlay}
               />
             ))}
           </Container>

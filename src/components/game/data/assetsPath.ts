@@ -16,6 +16,10 @@ export async function assetsPath() {
           { name: "s7", srcs: "Assets/neo_7.png" },
         ],
       },
+      {
+        name: "background",
+        assets: [{ name: "border", srcs: "/Assets/border.png" }],
+      },
     ],
   };
   await Assets.init({ manifest: manifest });

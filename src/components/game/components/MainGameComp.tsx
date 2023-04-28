@@ -13,10 +13,9 @@ export const MainGame: React.FC<MainGameProps> = ({ textures, stageH, stageW }) 
 
   const SYMBOL_SIZE = 150;
   const REEL_WIDTH = 160;
-
   return textures.length ? (
     <AppProvider value={app}>
-      <Container position={[(stageW - REEL_WIDTH * 5) / 2, (stageH - REEL_WIDTH * 4) / 2]}>
+      <Container position={[(stageW - SYMBOL_SIZE * 5) / 2, (stageH - REEL_WIDTH * 4) / 2]}>
         <Reel slotTextures={textures} SYMBOL_SIZE={SYMBOL_SIZE} REEL_WIDTH={REEL_WIDTH} />
       </Container>
     </AppProvider>
