@@ -25,8 +25,8 @@ const root = createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      {/* <RouterProvider router={router} /> */}
-      <Game />
+      <RouterProvider router={router} />
+      {/* <Game /> */}
     </Provider>
   </React.StrictMode>
 );

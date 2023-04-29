@@ -3,11 +3,6 @@ import { MainGame } from "./MainGameComp";
 import { Stage } from "../utils/ContexBridge";
 import { getScreenSize } from "./GameScreen";
 import styles from "./styles.module.css";
-import { useSelector, useDispatch } from "react-redux";
-import { setTextures, setIsAssetsLoading } from "../../../store/slotsSlice";
-import { RootState } from "../../../store/store";
-import { assetsPath } from "../data/assetsPath";
-import { Texture, Assets } from "pixi.js";
 
 interface GameSetupProps {
   className: string;
@@ -15,21 +10,6 @@ interface GameSetupProps {
 }
 export const GameSetup: React.FC<GameSetupProps> = () => {
   const [screenSize, setScreenSize] = useState(getScreenSize());
-
-  const dispatch = useDispatch();
-  const textures = useSelector((state: RootState) => state.slots.textures);
-
-  useEffect(() => {
-    const loadAssets = async () => {
-      dispatch(setIsAssetsLoading(true));
-      await assetsPath();
-      const loadedAssets = await Assets.loadBundle("neo-slots");
-      const assets: Texture[] = Object.values(loadedAssets);
-      dispatch(setTextures(textures.concat(...assets)));
-      dispatch(setIsAssetsLoading(false));
-    };
-    loadAssets();
-  }, []);
 
   const handleResize = useCallback(() => {
     setScreenSize(getScreenSize());
@@ -54,7 +34,7 @@ export const GameSetup: React.FC<GameSetupProps> = () => {
         className={styles.canvas}
         options={{ autoDensity: true, backgroundColor: 0x0000, backgroundAlpha: 0.1 }}
       >
-        <MainGame textures={textures} stageH={stageH} stageW={stageW} />
+        <MainGame stageH={stageH} stageW={stageW} />
       </Stage>
     </div>
   );

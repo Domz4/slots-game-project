@@ -4,21 +4,35 @@ import { Container, Sprite } from "@pixi/react";
 import { BlurFilter, Texture, Graphics } from "pixi.js";
 import { ReelData, SymbolData } from "../types/types";
 import { gsap } from "gsap";
-import { PlayButton } from "./PlayButton";
+import { RootState } from "../../../store/store";
+import { useSelector, useDispatch } from "react-redux";
+import { assetsPath } from "../data/assetsPath";
+import { Assets } from "pixi.js";
 
 interface ReelProps {
-  slotTextures: Texture[];
   REEL_WIDTH: number;
   SYMBOL_SIZE: number;
 }
 
-export const Reel: React.FC<ReelProps> = ({ slotTextures, REEL_WIDTH, SYMBOL_SIZE }) => {
+export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
   const [reels, setReels] = useState<ReelData[]>([]);
   const [running, setRunning] = useState(false);
   const [mask, setMask] = useState<Graphics | null>(null);
+  const [textures, setTextures] = useState<Texture[]>([]);
   const reelContainer = useRef(null);
+
   console.log(reels);
   useEffect(() => {
+    const loadAssets = async () => {
+      await assetsPath();
+      const loadedAssets = await Assets.loadBundle("neo-slots");
+      const assets: Texture[] = Object.values(loadedAssets);
+      setTextures([...assets]);
+    };
+    loadAssets();
+  }, []);
+  useEffect(() => {
+    if (!textures.length) return;
     const newReels: ReelData[] = [];
     for (let i = 0; i < 5; i++) {
       const reel: ReelData = {
@@ -33,7 +47,7 @@ export const Reel: React.FC<ReelProps> = ({ slotTextures, REEL_WIDTH, SYMBOL_SIZ
 
       for (let j = 0; j < 4; j++) {
         const symbol: SymbolData = {
-          texture: slotTextures[Math.floor(Math.random() * slotTextures.length)],
+          texture: textures[Math.floor(Math.random() * textures.length)],
           x: 0,
           y: j * SYMBOL_SIZE,
         };
@@ -42,7 +56,7 @@ export const Reel: React.FC<ReelProps> = ({ slotTextures, REEL_WIDTH, SYMBOL_SIZ
       newReels.push(reel);
     }
     setReels(newReels);
-  }, [slotTextures]);
+  }, [textures]);
 
   const reelsComplete = () => {
     setRunning(false);
@@ -80,7 +94,7 @@ export const Reel: React.FC<ReelProps> = ({ slotTextures, REEL_WIDTH, SYMBOL_SIZ
       const prevy = symbol.y;
       symbol.y = ((reel.position + j) % reel.symbols.length) * SYMBOL_SIZE - SYMBOL_SIZE;
       if (symbol.y < 0 && prevy > SYMBOL_SIZE) {
-        symbol.texture = slotTextures[Math.floor(Math.random() * slotTextures.length)];
+        symbol.texture = textures[Math.floor(Math.random() * textures.length)];
       }
     }
   };
@@ -93,27 +107,26 @@ export const Reel: React.FC<ReelProps> = ({ slotTextures, REEL_WIDTH, SYMBOL_SIZ
     setMask(g);
   }, []);
 
-  return (
-    <>
-      <Container x={50} y={120} ref={reelContainer} mask={mask}>
-        {reels.map((reel, index) => (
-          <Container key={index} x={index * REEL_WIDTH} filters={[reel.blur]}>
-            {reel.symbols.map((symbol, idx) => (
-              <Sprite
-                key={idx}
-                texture={symbol.texture}
-                x={symbol.x}
-                y={symbol.y}
-                width={150}
-                height={150}
-                anchor={0.5}
-                interactive={true}
-                onclick={startPlay}
-              />
-            ))}
-          </Container>
-        ))}
-      </Container>
-    </>
-  );
+  return textures.length ? (
+    <Container x={50} y={120} ref={reelContainer} mask={mask}>
+      {reels.map((reel, index) => (
+        <Container key={index} x={index * REEL_WIDTH} filters={[reel.blur]}>
+          {reel.symbols.map((symbol, idx) => (
+            <Sprite
+              key={idx}
+              texture={symbol.texture}
+              x={symbol.x}
+              y={symbol.y}
+              width={150}
+              height={150}
+              anchor={0.5}
+              interactive={true}
+              onclick={startPlay}
+              zIndex={1}
+            />
+          ))}
+        </Container>
+      ))}
+    </Container>
+  ) : null;
 };

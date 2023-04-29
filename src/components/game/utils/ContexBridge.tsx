@@ -8,7 +8,8 @@ interface ContextBridgeProps {
   Context: ReactReduxContextInstance;
   render: (children: React.ReactNode) => React.ReactNode;
 }
-interface StageProps extends Omit<PixiStage, "children"> {
+type PropsOf<T> = T extends React.Component<infer P> ? P : never;
+interface StageProps extends Omit<PropsOf<PixiStage>, "children"> {
   children: React.ReactNode;
 }
 const ContextBridge: React.FC<ContextBridgeProps> = ({ children, Context, render }) => {
