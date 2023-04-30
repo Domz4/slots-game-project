@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import Grid from "../../UI/Grid";
 import { Header } from "../../UI/Header";
 import LoadingOverlay from "../../UI/Loading";
@@ -6,10 +6,16 @@ import { Sidebar } from "../../UI/Sidebar";
 import styles from "./styles.module.css";
 import { AuthForm } from "../../components/homepage/authForm";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 export const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState<"Login" | "Register">("Login");
+
+  const username = useSelector((state: RootState) => state.auth.auth);
+
   const handleSettings = () => {
     console.log("Settings clicked");
   };
@@ -22,7 +28,8 @@ export const HomePage = () => {
     console.log("Stats clicked");
   };
 
-  const toggleAuth = () => {
+  const toggleAuth = (type: "Login" | "Register") => {
+    setActiveTab(type);
     setTimeout(() => {
       setLoginModalVisible(!loginModalVisible);
     }, 100);
@@ -45,13 +52,22 @@ export const HomePage = () => {
   };
   return (
     <>
-      <Header onLogin={toggleAuth} onLogout={handleLogout} onRegister={toggleAuth} />
-      <AuthForm isVisible={loginModalVisible} toggleAuth={toggleAuth} type={"login"} />
+      <Header
+        onLogin={() => toggleAuth("Login")}
+        onLogout={handleLogout}
+        onRegister={() => toggleAuth("Register")}
+        user={username}
+      />
+      <AuthForm
+        isVisible={loginModalVisible}
+        toggleAuth={() => toggleAuth(activeTab)}
+        activeTab={activeTab}
+      />
       <LoadingOverlay isLoading={isLoading} />
       <Grid size={250} className={styles.gridWrapper}>
         <Link to="/game">
           <img
-            src="http://localhost:3000/Assets/slots-icon.webp"
+            src="http://localhost:3000/assets/slots-icon.webp"
             className={styles.image}
             onClick={handleGameStart}
           />

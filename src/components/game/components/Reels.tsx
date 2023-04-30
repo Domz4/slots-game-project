@@ -21,7 +21,6 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
   const [textures, setTextures] = useState<Texture[]>([]);
   const reelContainer = useRef(null);
 
-  console.log(reels);
   useEffect(() => {
     const loadAssets = async () => {
       await assetsPath();
@@ -70,8 +69,7 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
       const reel = reels[i];
       const extra = Math.floor(Math.random() * 3);
       const target = reel.position + 10 + i * 5 + extra;
-      const time = 2 + i * 0.4 + extra * 0.3;
-
+      const time = 1.2 + i * 0.2 + extra * 0.2;
       gsap.to(reel, {
         position: target,
         duration: time,

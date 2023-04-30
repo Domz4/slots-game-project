@@ -2,12 +2,10 @@ import { Button } from "../Button";
 import { ReactComponent as Logo } from "../../assets/logo-mock.svg";
 import styles from "./styles.module.css";
 import { HTMLAttributes } from "react";
+import { Auth } from "../../types";
 
-type User = {
-  name: string;
-};
 interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
-  user?: User;
+  user?: Auth | null;
   onLogin: () => void;
   onLogout: () => void;
   onRegister: () => void;
