@@ -7,7 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import { Game } from "./pages/Games/Game";
 import UserSettings from "./pages/User";
-import { setToken } from "./services/authAPI";
+import { setToken } from "./services/apiHandler";
 import { Header } from "./UI/Header";
 import { logout } from "./store/authSlice";
 import { useSelector } from "react-redux";

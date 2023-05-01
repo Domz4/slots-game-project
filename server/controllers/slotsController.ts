@@ -7,30 +7,45 @@ const slotsRouter = Router();
 
 const symbols = ["A", "B", "C", "D", "E", "F", "G"];
 
-const generateOutcome = (slots: number = 5): string[] => {
-  const outcome: string[] = [];
-  for (let i = 0; i < slots; i++) {
-    const randomIndex = Math.floor(Math.random() * symbols.length);
-    outcome.push(symbols[randomIndex]);
+const generateOutcome = (rows: number = 3, cols: number = 5): string[][] => {
+  const outcome: string[][] = [];
+  for (let i = 0; i < rows; i++) {
+    const row: string[] = [];
+    for (let j = 0; j < cols; j++) {
+      const randomIndex = Math.floor(Math.random() * symbols.length);
+      row.push(symbols[randomIndex]);
+    }
+    outcome.push(row);
   }
   return outcome;
 };
 
-const calculateWinnings = (outcome: string[], betAmount: number): number => {
-  const uniqueSymbols = new Set(outcome);
+const calculateWinnings = (outcome: string[][], betAmount: number): number => {
+  let winnings = 0;
 
-  if (uniqueSymbols.size === 1) {
-    return betAmount * 3;
+  const checkLine = (line: string[]): number => {
+    const uniqueSymbols = new Set(line);
+
+    if (uniqueSymbols.size === 1) {
+      return betAmount * 3;
+    }
+
+    if (uniqueSymbols.size === 2) {
+      return betAmount * 2;
+    }
+
+    if (uniqueSymbols.size === 3) {
+      return betAmount * 1.5;
+    }
+
+    return 0;
+  };
+
+  for (let i = 0; i < outcome.length; i++) {
+    winnings += checkLine(outcome[i]);
   }
 
-  if (uniqueSymbols.size === 2) {
-    return betAmount * 2;
-  }
-  if (uniqueSymbols.size === 3) {
-    return betAmount * 1.5;
-  }
-
-  return 0;
+  return winnings;
 };
 
 slotsRouter.post("/play", authMiddleware, async (req: Request, res: Response) => {

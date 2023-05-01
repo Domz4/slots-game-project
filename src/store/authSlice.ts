@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Auth } from "../types";
-import { login, addBalance as addBalanceAPI, setToken } from "../services/authAPI";
+import { login, addBalance as addBalanceAPI, setToken } from "../services/apiHandler";
 interface AuthState {
   auth: Auth | null;
   error: string | null;

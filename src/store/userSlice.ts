@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "../types";
-import { register } from "../services/authAPI";
+import { register } from "../services/apiHandler";
 
 interface UserState {
   users: User[];

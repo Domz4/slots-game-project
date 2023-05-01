@@ -28,3 +28,12 @@ export const addBalance = async (amount: number) => {
   );
   return response.data;
 };
+
+export const gameOutcome = async (betAmount: number) => {
+  const response = await axios.post(
+    urlJoin(baseURL, "api/slots/play"),
+    { betAmount },
+    { headers: { Authorization: `bearer ${token}` } }
+  );
+  return response.data;
+};

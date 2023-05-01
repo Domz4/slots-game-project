@@ -8,6 +8,7 @@ import { RootState } from "../../../store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { assetsPath } from "../data/assetsPath";
 import { Assets } from "pixi.js";
+import { gameOutcome } from "../../../services/apiHandler";
 
 interface ReelProps {
   REEL_WIDTH: number;
@@ -19,9 +20,10 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
   const [running, setRunning] = useState(false);
   const [mask, setMask] = useState<Graphics | null>(null);
   const [textures, setTextures] = useState<Texture[]>([]);
+  const [apiOutcome, setApiOutcome] = useState<string[]>([]);
   const reelContainer = useRef(null);
 
-  console.log(reels);
+  const symbols = ["s1", "s2", "s3", "s4", "s5", "s6", "s7"];
 
   useEffect(() => {
     const loadAssets = async () => {
@@ -32,6 +34,7 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
     };
     loadAssets();
   }, []);
+
   useEffect(() => {
     if (!textures.length) return;
     const newReels: ReelData[] = [];
@@ -63,29 +66,57 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
     setRunning(false);
   };
 
-  const startPlay = () => {
+  const startPlay = async () => {
     if (running) return;
     setRunning(true);
+
+    try {
+      const data = await gameOutcome(1);
+      const { outcome } = data;
+      setApiOutcome(outcome);
+    } catch (error) {
+      console.error("Error:", error);
+    }
 
     for (let i = 0; i < reels.length; i++) {
       const reel = reels[i];
       const extra = Math.floor(Math.random() * 3);
       const target = reel.position + 10 + i * 5 + extra;
       const time = 1.2 + i * 0.2 + extra * 0.2;
+
       gsap.to(reel, {
         position: target,
         duration: time,
         ease: "back.out(0.3)",
         onUpdate: () => {
-          updateReel(reel);
+          updateReel(reel, false);
           setReels([...reels]);
         },
-        onComplete: i === reels.length - 1 ? reelsComplete : undefined,
+        onComplete: () => {
+          updateReel(reel, true);
+          setReels([...reels]);
+
+          if (i === reels.length - 1) {
+            reelsComplete();
+            updateSymbolsFromApiOutcome(reels, apiOutcome);
+          }
+        },
       });
     }
   };
-
-  const updateReel = (reel: ReelData) => {
+  const updateSymbolsFromApiOutcome = (reels: ReelData[], outcome: string[]) => {
+    if (!outcome.length) return;
+    for (let i = 0; i < reels.length; i++) {
+      const reel = reels[i];
+      const symbolIndex = symbols.indexOf(outcome[i]);
+      if (symbolIndex !== -1) {
+        const texture = textures[symbolIndex];
+        reel.symbols[0].texture = texture;
+      }
+    }
+    setReels([...reels]);
+  };
+  const updateReel = (reel: ReelData, useApiOutcome: boolean) => {
     reel.blur.blurY = (reel.position - reel.previousPosition) * 8;
     reel.previousPosition = reel.position;
 
@@ -94,7 +125,9 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
       const prevy = symbol.y;
       symbol.y = ((reel.position + j) % reel.symbols.length) * SYMBOL_SIZE - SYMBOL_SIZE;
       if (symbol.y < 0 && prevy > SYMBOL_SIZE) {
-        symbol.texture = textures[Math.floor(Math.random() * textures.length)];
+        if (!useApiOutcome || j > 0) {
+          symbol.texture = textures[Math.floor(Math.random() * textures.length)];
+        }
       }
     }
   };
