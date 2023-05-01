@@ -79,6 +79,13 @@ export const AuthForm: FC<authFormProps> = ({ isVisible, toggleAuth, activeTab }
                   required
                 />
               </div>
+              <label>Password:</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
           ) : (
             <div>

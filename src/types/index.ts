@@ -8,13 +8,12 @@ export interface User {
   name: string;
   email: string;
   passwordHash: string;
+  balance: number;
+  token: string;
 }
 
-export interface Auth {
-  token: string;
-  username: string;
-  name: string;
-}
+export type Auth = Omit<User, "passwordHash">;
+
 export interface RegisterUserData {
   username: string;
   name: string;

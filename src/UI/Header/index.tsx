@@ -20,7 +20,7 @@ export const Header = ({ user, onLogin, onLogout, onRegister, ...props }: Header
       {user ? (
         <div className={styles.user}>
           <div>
-            <span>$0</span>
+            <span>${user.balance}</span>
           </div>
           <div className="username">
             <span>{user.name}</span>

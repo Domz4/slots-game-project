@@ -21,6 +21,8 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
   const [textures, setTextures] = useState<Texture[]>([]);
   const reelContainer = useRef(null);
 
+  console.log(reels);
+
   useEffect(() => {
     const loadAssets = async () => {
       await assetsPath();
