@@ -1,25 +1,26 @@
-import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../utils/config";
+import { SESSION_SECRET } from "../utils/config";
+import { Request, Response, NextFunction } from "express";
+import User from "../models/User";
 
-export const authenticateToken = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  const token = req.header("Authorization")?.split(" ")[1];
 
-    if (!token) {
-        return res.sendStatus(401);
+  if (!token) {
+    return res.status(401).json({ error: "Access denied, no token provided" });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, SESSION_SECRET) as { id: string; username: string };
+    const user = await User.findById(decodedToken.id);
+
+    if (!user) {
+      return res.status(401).json({ error: "Access denied, user not found" });
     }
 
-    jwt.verify(token, JWT_SECRET, (err: unknown, user: unknown) => {
-        if (err) {
-            return res.sendStatus(403);
-        }
-
-        req.body.user = user;
-        next();
-    });
+    req.user = user;
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Invalid token" });
+  }
 };

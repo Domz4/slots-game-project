@@ -1,84 +1,102 @@
-import request from "supertest";
+import supertest from "supertest";
+import { usersInDb } from "./test_helper";
+import { Jwt } from "jsonwebtoken";
 import app from "../app";
 import User from "../models/User";
 import mongoose from "mongoose";
-import { MONGODB_URI } from "../utils/config";
+import bcrypt from "bcrypt";
+const api = supertest(app);
 
-const testUser = {
-    username: "jestUser",
-    email: "jestUser@example.com",
-    password: "jestUserPassword",
-};
-
-beforeAll(async () => {
-    if (!MONGODB_URI) {
-        throw new Error("Database error");
-    }
-
-    await mongoose.connect(MONGODB_URI);
-});
-
-afterEach(async () => {
+describe("when there is one user in db", () => {
+  beforeEach(async () => {
     await User.deleteMany({});
+    const passwordHash = await bcrypt.hash("sekret", 10);
+    const user = new User({ username: "root", passwordHash });
+    await user.save();
+  });
+
+  test("creation succeeds with a fresh username", async () => {
+    const usersAtStart = await usersInDb();
+
+    const newUser = {
+      username: "testUser",
+      name: "testName",
+      password: "TESTPASSPORD",
+    };
+
+    await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const usersAtEnd = await usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
+    const usernames = usersAtEnd.map((u) => u.username);
+    expect(usernames).toContain(newUser.username);
+  });
+
+  test("username already exist", async () => {
+    const newUser = {
+      username: "testUser",
+      name: "testName",
+      password: "TESTPASSPORD",
+    };
+    const userAtStart = await usersInDb();
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+    expect(result.body.error).toContain("username must be unique");
+
+    const usersAtEnd = await usersInDb();
+    expect(usersAtEnd).toHaveLength(userAtStart.length);
+  });
+
+  test("username is shorter than 3 characters", async () => {
+    const usersAtStart = await usersInDb();
+
+    const newUser = {
+      username: "Te",
+      name: "name",
+      password: "password",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("username and password must be at least 3 characters long");
+
+    const usersAtEnd = await usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length);
+  });
+
+  test("password is shorter than 3 characters", async () => {
+    const usersAtStart = await usersInDb();
+
+    const newUser = {
+      username: "testName",
+      name: "name",
+      password: "pa",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("username and password must be at least 3 characters long");
+
+    const usersAtEnd = await usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length);
+  });
 });
 
-afterAll(async () => {
-    await mongoose.connection.close();
-});
-
-describe("User Registration", () => {
-    it("should register a new user successfully", async () => {
-        const response = await request(app)
-            .post("/api/users/register")
-            .send(testUser);
-
-        expect(response.status).toBe(201);
-        expect(response.body.username).toEqual(testUser.username);
-        expect(response.body.email).toEqual(testUser.email);
-    });
-
-    it("should fail if email is already registered", async () => {
-        await request(app).post("/api/users/register").send(testUser);
-
-        const response = await request(app)
-            .post("/api/users/register")
-            .send(testUser);
-
-        expect(response.status).toBe(500);
-        expect(response.body.error).toContain("E11000");
-    });
-});
-
-describe("User Authentication", () => {
-    beforeEach(async () => {
-        await request(app).post("/api/users/register").send(testUser);
-    });
-
-    it("should log in successfully with correct credentials", async () => {
-        const response = await request(app)
-            .post("/api/users/login")
-            .send({ email: testUser.email, password: testUser.password });
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty("token");
-    });
-
-    it("should fail to log in with an incorrect password", async () => {
-        const response = await request(app)
-            .post("/api/users/login")
-            .send({ email: testUser.email, password: "wrongpassword" });
-
-        expect(response.status).toBe(401);
-        expect(response.body.error).toEqual("Invalid email or password");
-    });
-
-    it("should fail to log in with an unregistered email", async () => {
-        const response = await request(app).post("/api/users/login").send({
-            email: "unregistered@example.com",
-            password: testUser.password,
-        });
-
-        expect(response.status).toBe(401);
-        expect(response.body.error).toEqual("Invalid email or password");
-    });
+afterAll(() => {
+  mongoose.connection.close();
 });

@@ -3,7 +3,7 @@ import styles from "./styles.module.css";
 
 export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   variant: "secondary" | "secondary-alt" | "primary" | "empty";
-  children: ReactNode;
+  children?: ReactNode;
   size?: "mini" | "sm" | "md" | "lg";
   backgroundColor?: string;
 }
