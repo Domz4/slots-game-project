@@ -1,14 +1,11 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser extends Document {
-  username: {
-    type: string;
-    required: boolean;
-    minlength: number;
-  };
-  email: { type: string; unique: boolean };
+  username: string;
+  email: string;
   passwordHash: string;
   name: string;
+  balance: number;
 }
 
 const UserSchema: Schema = new Schema<IUser>({
@@ -20,6 +17,7 @@ const UserSchema: Schema = new Schema<IUser>({
   name: String,
   email: { type: String, unique: true },
   passwordHash: String,
+  balance: { type: Number, default: 0 },
 });
 
 UserSchema.set("toJSON", {
