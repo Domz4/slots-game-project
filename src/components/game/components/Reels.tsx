@@ -1,14 +1,16 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Container, Sprite } from "@pixi/react";
 import { BlurFilter, Texture, Graphics } from "pixi.js";
 import { ReelData, SymbolData } from "../types/types";
 import { gsap } from "gsap";
-import { RootState } from "../../../store/store";
-import { useSelector, useDispatch } from "react-redux";
 import { assetsPath } from "../data/assetsPath";
 import { Assets } from "pixi.js";
-import { gameOutcome } from "../../../services/apiHandler";
+import { Winnings } from "./DisplayWinnings";
+import { RootState, useAppDispatch } from "../../../store/store";
+import { setBalance } from "../../../store/authSlice";
+import { spinSlot } from "../../../store/slotsSlice";
+import { useSelector } from "react-redux";
 
 interface ReelProps {
   REEL_WIDTH: number;
@@ -20,11 +22,15 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
   const [running, setRunning] = useState(false);
   const [mask, setMask] = useState<Graphics | null>(null);
   const [textures, setTextures] = useState<Texture[]>([]);
-  const [apiOutcome, setApiOutcome] = useState<string[]>([]);
+  const [bet, setBet] = useState<number>(100);
   const reelContainer = useRef(null);
+  const dispatch = useAppDispatch();
 
   const symbols = ["s1", "s2", "s3", "s4", "s5", "s6", "s7"];
 
+  const outcome = useSelector((state: RootState) => state.slots.outcome);
+
+  console.log(outcome?.outcome);
   useEffect(() => {
     const loadAssets = async () => {
       await assetsPath();
@@ -65,15 +71,16 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
   const reelsComplete = () => {
     setRunning(false);
   };
-
   const startPlay = async () => {
     if (running) return;
     setRunning(true);
 
     try {
-      const data = await gameOutcome(1);
-      const { outcome } = data;
-      setApiOutcome(outcome);
+      await dispatch(spinSlot(bet));
+      const updatedUser = {
+        balance: outcome?.updatedBalance,
+      };
+      dispatch(setBalance(updatedUser));
     } catch (error) {
       console.error("Error:", error);
     }
@@ -98,7 +105,8 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
 
           if (i === reels.length - 1) {
             reelsComplete();
-            updateSymbolsFromApiOutcome(reels, apiOutcome);
+            console.log(outcome);
+            updateSymbolsFromApiOutcome(reels, outcome?.outcome);
           }
         },
       });
@@ -116,6 +124,7 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
     }
     setReels([...reels]);
   };
+
   const updateReel = (reel: ReelData, useApiOutcome: boolean) => {
     reel.blur.blurY = (reel.position - reel.previousPosition) * 8;
     reel.previousPosition = reel.position;
@@ -141,25 +150,28 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
   }, []);
 
   return textures.length ? (
-    <Container x={50} y={120} ref={reelContainer} mask={mask}>
-      {reels.map((reel, index) => (
-        <Container key={index} x={index * REEL_WIDTH} filters={[reel.blur]}>
-          {reel.symbols.map((symbol, idx) => (
-            <Sprite
-              key={idx}
-              texture={symbol.texture}
-              x={symbol.x}
-              y={symbol.y}
-              width={150}
-              height={150}
-              anchor={0.5}
-              interactive={true}
-              onclick={startPlay}
-              zIndex={1}
-            />
-          ))}
-        </Container>
-      ))}
-    </Container>
+    <>
+      <Winnings x={10} y={10} w={10} />
+      <Container x={50} y={120} ref={reelContainer} mask={mask}>
+        {reels.map((reel, index) => (
+          <Container key={index} x={index * REEL_WIDTH} filters={[reel.blur]}>
+            {reel.symbols.map((symbol, idx) => (
+              <Sprite
+                key={idx}
+                texture={symbol.texture}
+                x={symbol.x}
+                y={symbol.y}
+                width={150}
+                height={150}
+                anchor={0.5}
+                interactive={true}
+                onclick={startPlay}
+                zIndex={1}
+              />
+            ))}
+          </Container>
+        ))}
+      </Container>
+    </>
   ) : null;
 };

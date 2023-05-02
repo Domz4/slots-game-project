@@ -5,9 +5,9 @@ import User from "../models/User";
 
 const slotsRouter = Router();
 
-const symbols = ["A", "B", "C", "D", "E", "F", "G"];
+const symbols = ["s1", "s2", "s3", "s4", "s5", "s6", "s7"];
 
-const generateOutcome = (rows: number = 3, cols: number = 5): string[][] => {
+export const generateOutcome = (rows: number = 3, cols: number = 5): string[][] => {
   const outcome: string[][] = [];
   for (let i = 0; i < rows; i++) {
     const row: string[] = [];
@@ -20,21 +20,25 @@ const generateOutcome = (rows: number = 3, cols: number = 5): string[][] => {
   return outcome;
 };
 
-const calculateWinnings = (outcome: string[][], betAmount: number): number => {
+export const calculateWinnings = (outcome: string[][], betAmount: number) => {
   let winnings = 0;
+  let winningLines: string[] = [];
 
   const checkLine = (line: string[]): number => {
     const uniqueSymbols = new Set(line);
 
     if (uniqueSymbols.size === 1) {
+      winningLines.concat(line);
       return betAmount * 3;
     }
 
     if (uniqueSymbols.size === 2) {
+      winningLines.concat(line);
       return betAmount * 2;
     }
 
     if (uniqueSymbols.size === 3) {
+      winningLines.concat(line);
       return betAmount * 1.5;
     }
 
@@ -45,7 +49,7 @@ const calculateWinnings = (outcome: string[][], betAmount: number): number => {
     winnings += checkLine(outcome[i]);
   }
 
-  return winnings;
+  return { winnings, winningLines };
 };
 
 slotsRouter.post("/play", authMiddleware, async (req: Request, res: Response) => {
@@ -61,12 +65,12 @@ slotsRouter.post("/play", authMiddleware, async (req: Request, res: Response) =>
   }
 
   const outcome = generateOutcome();
-  const winnings = calculateWinnings(outcome, betAmount);
+  const { winnings, winningLines } = calculateWinnings(outcome, betAmount);
 
   const updatedBalance = user.balance - betAmount + winnings;
   await User.findByIdAndUpdate(user.id, { balance: updatedBalance });
 
-  res.json({ outcome, winnings, updatedBalance });
+  res.json({ outcome, winnings, updatedBalance, winningLines });
 });
 
 export default slotsRouter;

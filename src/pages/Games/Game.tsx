@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import LoadingOverlay from "../../UI/Loading";
 import styles from "./styles.module.css";
 const GameSetup = lazy(() =>

@@ -28,8 +28,8 @@ export const MainGame: React.FC<MainGameProps> = ({ stageH, stageW }) => {
         <Sprite
           texture={border}
           anchor={0.5}
-          x={565}
-          y={340}
+          x={window.innerWidth / 2 - 200}
+          y={window.innerHeight / 2 - 140}
           height={650}
           width={1100}
           zIndex={0}

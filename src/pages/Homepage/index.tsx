@@ -13,19 +13,11 @@ export const HomePage = () => {
         </div>
       ));
   };
-  const handleGameStart = () => {
-    console.log("");
-  };
-
   return (
     <>
       <Grid size={250} className={styles.gridWrapper}>
         <Link to="/game">
-          <img
-            src="http://localhost:3000/assets/slots-icon.webp"
-            className={styles.image}
-            onClick={handleGameStart}
-          />
+          <img src="http://localhost:3000/assets/slots-icon.webp" className={styles.image} />
         </Link>
 
         {mockFill(10)}
