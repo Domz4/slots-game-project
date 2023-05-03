@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 interface ProgressProps {
   total: number;
   progress: number;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const ProgressBar = ({ children, progress, total = 100, ...props }: ProgressProps) => {

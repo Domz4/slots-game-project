@@ -16,11 +16,6 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   contentClassName?: string;
   className?: string;
 }
-const overlayRoot = document.getElementById("overlay-root");
-
-if (!overlayRoot) {
-  throw new Error("Root element found");
-}
 
 export const Modal = ({
   title,
@@ -62,6 +57,6 @@ export const Modal = ({
         </ModalContent>
       </CSSTransition>
     </>,
-    overlayRoot
+    document.body
   );
 };

@@ -7,18 +7,12 @@ interface LoadingOverlayProps {
 }
 
 const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isLoading }) => {
-  const overlayRoot = document.getElementById("overlay-root");
-
-  if (!overlayRoot) {
-    throw new Error("Root element found");
-  }
-
   const overlay = (
     <div className="loader-overlay">
       <span className="loader" />
     </div>
   );
 
-  return isLoading ? createPortal(overlay, overlayRoot) : null;
+  return isLoading ? createPortal(overlay, document.body) : null;
 };
 export default LoadingOverlay;

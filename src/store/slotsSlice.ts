@@ -1,19 +1,22 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { gameOutcome } from "../services/apiHandler";
 
-type Outcome = {
-  outcome: string[][];
+export type Outcome = {
+  outcome: number[][];
   winnings: number;
   updatedBalance: number;
+  winningLines: number[][];
 };
 
 interface SlotsState {
   isAssetsLoading: boolean;
   outcome: Outcome | null;
+  reels: number[][];
 }
 
 const initialState: SlotsState = {
   isAssetsLoading: false,
+  reels: [],
   outcome: null,
 };
 
@@ -29,6 +32,9 @@ export const slotsSlice = createSlice({
     setIsAssetsLoading: (state, action: PayloadAction<boolean>) => {
       state.isAssetsLoading = action.payload;
     },
+    setReels: (state, action: PayloadAction<number[][]>) => {
+      state.reels = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(spinSlot.fulfilled, (state, action: PayloadAction<Outcome>) => {
@@ -37,6 +43,6 @@ export const slotsSlice = createSlice({
   },
 });
 
-export const { setIsAssetsLoading } = slotsSlice.actions;
+export const { setIsAssetsLoading, setReels } = slotsSlice.actions;
 
 export default slotsSlice.reducer;

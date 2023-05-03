@@ -23,7 +23,7 @@ if (MONGODB_URI) {
   app.use("/api/users", usersRouter);
   app.use("/api/login", loginRouter);
   app.use("/api/balance", authMiddleware, balanceRouter);
-  app.use("/api/slots", authMiddleware, slotsRouter);
+  app.use("/api/slots", slotsRouter);
 
   app.use(express.json());
 

@@ -37,3 +37,8 @@ export const gameOutcome = async (betAmount: number) => {
   );
   return response.data;
 };
+
+export const getInitPosition = async () => {
+  const response = await axios.get(urlJoin(baseURL, "api/slots/reels"));
+  return response.data;
+};

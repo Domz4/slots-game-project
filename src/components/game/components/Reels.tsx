@@ -11,26 +11,29 @@ import { RootState, useAppDispatch } from "../../../store/store";
 import { setBalance } from "../../../store/authSlice";
 import { spinSlot } from "../../../store/slotsSlice";
 import { useSelector } from "react-redux";
+import { getInitPosition } from "../../../services/apiHandler";
+import { Outcome } from "../../../store/slotsSlice";
+import { setReels } from "../../../store/slotsSlice";
 
 interface ReelProps {
   REEL_WIDTH: number;
   SYMBOL_SIZE: number;
+  bet: number;
 }
 
-export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
+export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE, bet }) => {
   const [reels, setReels] = useState<ReelData[]>([]);
+  const [reelTape, setReelTape] = useState<number[][]>([]);
   const [running, setRunning] = useState(false);
   const [mask, setMask] = useState<Graphics | null>(null);
   const [textures, setTextures] = useState<Texture[]>([]);
-  const [bet, setBet] = useState<number>(100);
   const reelContainer = useRef(null);
   const dispatch = useAppDispatch();
 
-  const symbols = ["s1", "s2", "s3", "s4", "s5", "s6", "s7"];
-
   const outcome = useSelector((state: RootState) => state.slots.outcome);
 
-  console.log(outcome?.outcome);
+  const symbols = ["s1", "s2", "s3", "s4", "s5", "s6", "s7"];
+
   useEffect(() => {
     const loadAssets = async () => {
       await assetsPath();
@@ -43,100 +46,104 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE }) => {
 
   useEffect(() => {
     if (!textures.length) return;
-    const newReels: ReelData[] = [];
-    for (let i = 0; i < 5; i++) {
-      const reel: ReelData = {
-        container: null,
-        symbols: [],
-        position: 0,
-        previousPosition: 0,
-        blur: new BlurFilter(),
-      };
-      reel.blur.blurX = 0;
-      reel.blur.blurY = 0;
 
-      for (let j = 0; j < 4; j++) {
-        const symbol: SymbolData = {
-          texture: textures[Math.floor(Math.random() * textures.length)],
-          x: 0,
-          y: j * SYMBOL_SIZE,
+    const initializeReels = async () => {
+      const getReels = await getInitPosition();
+      const initReels = [
+        getReels.reel1,
+        getReels.reel2,
+        getReels.reel3,
+        getReels.reel4,
+        getReels.reel5,
+      ];
+
+      setReelTape(initReels);
+
+      const newReels: ReelData[] = [];
+      for (let i = 0; i < 5; i++) {
+        const reel: ReelData = {
+          container: null,
+          symbols: [],
+          position: 0,
+          previousPosition: 0,
+          blur: new BlurFilter(),
         };
-        reel.symbols.push(symbol);
-      }
-      newReels.push(reel);
-    }
-    setReels(newReels);
-  }, [textures]);
+        reel.blur.blurX = 0;
+        reel.blur.blurY = 0;
 
+        for (let j = 0; j < 4; j++) {
+          const symbolIndex = symbols.indexOf(`s${initReels[i][j]}`);
+          if (symbolIndex !== -1) {
+            const texture = textures[symbolIndex];
+
+            const symbol: SymbolData = {
+              texture: texture,
+              x: 0,
+              y: j * SYMBOL_SIZE,
+            };
+            reel.symbols.push(symbol);
+          }
+        }
+        newReels.push(reel);
+      }
+      setReels(newReels);
+    };
+
+    initializeReels();
+  }, [textures]);
   const reelsComplete = () => {
     setRunning(false);
   };
+
   const startPlay = async () => {
     if (running) return;
     setRunning(true);
 
     try {
-      await dispatch(spinSlot(bet));
-      const updatedUser = {
-        balance: outcome?.updatedBalance,
-      };
-      dispatch(setBalance(updatedUser));
+      const spinSlotPromise = dispatch(spinSlot(bet));
+
+      spinSlotPromise.then(() => {
+        if (outcome) {
+          const updatedUser = {
+            balance: outcome.updatedBalance,
+          };
+          dispatch(setBalance(updatedUser));
+        }
+        for (let i = 0; i < reels.length; i++) {
+          const reel = reels[i];
+          const extra = Math.floor(Math.random() * 3);
+          const target = reel.position + 10 + i * 5 + extra;
+          const time = 1.2 + i * 0.2 + extra * 0.2;
+
+          gsap.to(reel, {
+            position: target,
+            duration: time,
+            ease: "back.out(0.3)",
+            onUpdate: () => {
+              updateReel(reel, outcome);
+              setReels([...reels]);
+            },
+            onComplete: () => {
+              if (i === reels.length - 1) reelsComplete();
+            },
+          });
+        }
+      });
     } catch (error) {
       console.error("Error:", error);
     }
-
-    for (let i = 0; i < reels.length; i++) {
-      const reel = reels[i];
-      const extra = Math.floor(Math.random() * 3);
-      const target = reel.position + 10 + i * 5 + extra;
-      const time = 1.2 + i * 0.2 + extra * 0.2;
-
-      gsap.to(reel, {
-        position: target,
-        duration: time,
-        ease: "back.out(0.3)",
-        onUpdate: () => {
-          updateReel(reel, false);
-          setReels([...reels]);
-        },
-        onComplete: () => {
-          updateReel(reel, true);
-          setReels([...reels]);
-
-          if (i === reels.length - 1) {
-            reelsComplete();
-            console.log(outcome);
-            updateSymbolsFromApiOutcome(reels, outcome?.outcome);
-          }
-        },
-      });
-    }
   };
-  const updateSymbolsFromApiOutcome = (reels: ReelData[], outcome: string[]) => {
-    if (!outcome.length) return;
-    for (let i = 0; i < reels.length; i++) {
-      const reel = reels[i];
-      const symbolIndex = symbols.indexOf(outcome[i]);
-      if (symbolIndex !== -1) {
-        const texture = textures[symbolIndex];
-        reel.symbols[0].texture = texture;
-      }
-    }
-    setReels([...reels]);
-  };
-
-  const updateReel = (reel: ReelData, useApiOutcome: boolean) => {
+  const updateReel = (reel: ReelData, outcome: Outcome | null) => {
     reel.blur.blurY = (reel.position - reel.previousPosition) * 8;
     reel.previousPosition = reel.position;
-
     for (let j = 0; j < reel.symbols.length; j++) {
       const symbol = reel.symbols[j];
       const prevy = symbol.y;
       symbol.y = ((reel.position + j) % reel.symbols.length) * SYMBOL_SIZE - SYMBOL_SIZE;
+      if (symbol.y > 600) symbol.y = -150;
       if (symbol.y < 0 && prevy > SYMBOL_SIZE) {
-        if (!useApiOutcome || j > 0) {
-          symbol.texture = textures[Math.floor(Math.random() * textures.length)];
-        }
+        console.log(outcome?.outcome[j]);
+        symbol.texture = textures[j];
       }
     }
   };
