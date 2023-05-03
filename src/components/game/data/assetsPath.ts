@@ -23,6 +23,7 @@ export async function assetsPath() {
           { name: "border", srcs: urlJoin(baseUrl, "/assets/border.png") },
           { name: "addBet", srcs: urlJoin(baseUrl, "/assets/add.svg") },
           { name: "subBet", srcs: urlJoin(baseUrl, "/assets/sub.svg") },
+          { name: "spinBtn", srcs: urlJoin(baseUrl, "/assets/spinButton.svg") },
         ],
       },
     ],

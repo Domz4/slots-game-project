@@ -9,7 +9,7 @@
   margin-left: 50px;
 }
 .box {
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.1);
   color: white;
   display: flex;
   justify-content: center;

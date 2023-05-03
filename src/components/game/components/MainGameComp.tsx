@@ -35,7 +35,7 @@ export const MainGame: React.FC<MainGameProps> = ({ stageH, stageW }) => {
   return (
     <AppProvider value={app}>
       {uiAssets ? (
-        <>
+        <Container>
           <Sprite
             texture={uiAssets[0]}
             anchor={0.5}
@@ -66,7 +66,7 @@ export const MainGame: React.FC<MainGameProps> = ({ stageH, stageW }) => {
             onclick={() => handleBet("subtract")}
           />
           <Text
-            text={`${bet}`}
+            text={`${bet}$`}
             anchor={0.5}
             x={250}
             y={stageH - 70}
@@ -83,7 +83,7 @@ export const MainGame: React.FC<MainGameProps> = ({ stageH, stageW }) => {
               })
             }
           />
-        </>
+        </Container>
       ) : null}
       <Container position={[(stageW - SYMBOL_SIZE * 5) / 2, (stageH - REEL_WIDTH * 4) / 2]}>
         <Reels SYMBOL_SIZE={SYMBOL_SIZE} REEL_WIDTH={REEL_WIDTH} bet={bet} />

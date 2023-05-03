@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import { useRef, useEffect, useState } from "react";
-import { Container, Sprite } from "@pixi/react";
-import { BlurFilter, Texture, Graphics } from "pixi.js";
+import { Container, Sprite, Text } from "@pixi/react";
+import { BlurFilter, Texture, Graphics, TextStyle } from "pixi.js";
 import { ReelData, SymbolData } from "../types/types";
 import { gsap } from "gsap";
 import { assetsPath } from "../data/assetsPath";
@@ -12,14 +12,13 @@ import { setBalance } from "../../../store/authSlice";
 import { spinSlot } from "../../../store/slotsSlice";
 import { useSelector } from "react-redux";
 import { getInitPosition } from "../../../services/apiHandler";
-import { Outcome } from "../../../store/slotsSlice";
-import { setReels } from "../../../store/slotsSlice";
 
 interface ReelProps {
   REEL_WIDTH: number;
   SYMBOL_SIZE: number;
   bet: number;
 }
+const symbols = ["s1", "s2", "s3", "s4", "s5", "s6", "s7"];
 
 export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE, bet }) => {
   const [reels, setReels] = useState<ReelData[]>([]);
@@ -27,18 +26,53 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE, bet }) => 
   const [running, setRunning] = useState(false);
   const [mask, setMask] = useState<Graphics | null>(null);
   const [textures, setTextures] = useState<Texture[]>([]);
+  const [spinBtn, setSpinBtn] = useState<Texture>();
+
   const reelContainer = useRef(null);
   const dispatch = useAppDispatch();
 
   const outcome = useSelector((state: RootState) => state.slots.outcome);
 
-  const symbols = ["s1", "s2", "s3", "s4", "s5", "s6", "s7"];
+  const setUpdatedReels = (initReels: number[][]) => {
+    const newReels: ReelData[] = [];
+    for (let i = 0; i < 5; i++) {
+      const reel: ReelData = {
+        container: null,
+        symbols: [],
+        position: 0,
+        previousPosition: 0,
+        blur: new BlurFilter(),
+      };
+      reel.blur.blurX = 0;
+      reel.blur.blurY = 0;
+
+      for (let j = 0; j < 4; j++) {
+        const symbolIndex = symbols.indexOf(`s${initReels[i][j]}`);
+        if (symbolIndex !== -1) {
+          const texture = textures[symbolIndex];
+
+          const symbol: SymbolData = {
+            texture: texture,
+            x: 0,
+            y: j * SYMBOL_SIZE,
+          };
+          reel.symbols.push(symbol);
+        }
+      }
+      newReels.push(reel);
+    }
+    return newReels;
+  };
 
   useEffect(() => {
     const loadAssets = async () => {
       await assetsPath();
       const loadedAssets = await Assets.loadBundle("neo-slots");
+      const loadButton = await Assets.load("spinBtn");
+
       const assets: Texture[] = Object.values(loadedAssets);
+
+      setSpinBtn(loadButton);
       setTextures([...assets]);
     };
     loadAssets();
@@ -59,34 +93,7 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE, bet }) => 
 
       setReelTape(initReels);
 
-      const newReels: ReelData[] = [];
-      for (let i = 0; i < 5; i++) {
-        const reel: ReelData = {
-          container: null,
-          symbols: [],
-          position: 0,
-          previousPosition: 0,
-          blur: new BlurFilter(),
-        };
-        reel.blur.blurX = 0;
-        reel.blur.blurY = 0;
-
-        for (let j = 0; j < 4; j++) {
-          const symbolIndex = symbols.indexOf(`s${initReels[i][j]}`);
-          if (symbolIndex !== -1) {
-            const texture = textures[symbolIndex];
-
-            const symbol: SymbolData = {
-              texture: texture,
-              x: 0,
-              y: j * SYMBOL_SIZE,
-            };
-            reel.symbols.push(symbol);
-          }
-        }
-        newReels.push(reel);
-      }
-      setReels(newReels);
+      setReels(setUpdatedReels(initReels));
     };
 
     initializeReels();
@@ -104,6 +111,7 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE, bet }) => 
 
       spinSlotPromise.then(() => {
         if (outcome) {
+          console.log(outcome);
           const updatedUser = {
             balance: outcome.updatedBalance,
           };
@@ -120,7 +128,7 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE, bet }) => 
             duration: time,
             ease: "back.out(0.3)",
             onUpdate: () => {
-              updateReel(reel, outcome);
+              updateReel(reel);
               setReels([...reels]);
             },
             onComplete: () => {
@@ -133,7 +141,7 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE, bet }) => 
       console.error("Error:", error);
     }
   };
-  const updateReel = (reel: ReelData, outcome: Outcome | null) => {
+  const updateReel = (reel: ReelData) => {
     reel.blur.blurY = (reel.position - reel.previousPosition) * 8;
     reel.previousPosition = reel.position;
     for (let j = 0; j < reel.symbols.length; j++) {
@@ -142,23 +150,51 @@ export const Reels: React.FC<ReelProps> = ({ REEL_WIDTH, SYMBOL_SIZE, bet }) => 
       symbol.y = ((reel.position + j) % reel.symbols.length) * SYMBOL_SIZE - SYMBOL_SIZE;
       if (symbol.y > 600) symbol.y = -150;
       if (symbol.y < 0 && prevy > SYMBOL_SIZE) {
-        console.log(outcome?.outcome[j]);
-        symbol.texture = textures[j];
+        symbol.texture = textures[Math.floor(Math.random() * symbols.length)];
       }
     }
   };
-
   useEffect(() => {
     const g = new Graphics();
     g.beginFill(0xffffff);
-    g.drawRect(0, 100, REEL_WIDTH * 10, REEL_WIDTH * 2.9);
+    g.drawRect(0, 110, REEL_WIDTH * 10, REEL_WIDTH * 2.8);
     g.endFill();
     setMask(g);
   }, []);
 
+  const winning = () => {
+    if (outcome) return Math.round(outcome?.winnings);
+    return 0;
+  };
   return textures.length ? (
     <>
-      <Winnings x={10} y={10} w={10} />
+      <Sprite
+        texture={spinBtn}
+        height={110}
+        width={110}
+        x={900}
+        y={550}
+        interactive={true}
+        onclick={startPlay}
+      />
+      <Text
+        text={`${winning()}$`}
+        anchor={0.5}
+        x={350}
+        y={600}
+        style={
+          new TextStyle({
+            align: "center",
+            fontFamily: '"Fira Code", Helvetica, sans-serif',
+            fontSize: 34,
+            strokeThickness: 0,
+            fill: "#ffffff",
+            letterSpacing: 5,
+            wordWrap: true,
+            wordWrapWidth: 440,
+          })
+        }
+      />
       <Container x={50} y={120} ref={reelContainer} mask={mask}>
         {reels.map((reel, index) => (
           <Container key={index} x={index * REEL_WIDTH} filters={[reel.blur]}>

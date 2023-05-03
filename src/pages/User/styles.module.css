@@ -1,3 +1,38 @@
 .page {
+  width: 100%;
+  margin: 3rem;
   color: white;
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+}
+.username {
+  font-size: 24px;
+}
+.name {
+  font-size: 24px;
+  margin-top: 2rem;
+}
+.balance {
+  font-size: 24px;
+
+  margin-top: 2rem;
+}
+.mainTitle {
+  font-size: 48px;
+
+  margin-top: 2rem;
+}
+.container {
+  display: flex;
+  justify-content: center;
+}
+.inputBalance {
+  font-size: 25px;
+  margin-right: 3rem;
+}
+.balanceControl {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
 }

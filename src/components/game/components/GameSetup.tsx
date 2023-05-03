@@ -32,7 +32,7 @@ export const GameSetup: React.FC<GameSetupProps> = () => {
         width={stageW}
         height={stageH}
         className={styles.canvas}
-        options={{ autoDensity: true, backgroundColor: 0x0000, backgroundAlpha: 0.1 }}
+        options={{ autoDensity: true, backgroundColor: 0x0000, backgroundAlpha: 0.3 }}
       >
         <MainGame stageH={stageH} stageW={stageW} />
       </Stage>

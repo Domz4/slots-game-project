@@ -10,7 +10,9 @@ const GameSetup = lazy(() =>
 export const Game = () => {
   return (
     <Suspense fallback={<LoadingOverlay isLoading={true} />}>
-      <GameSetup className={styles.gamescreen} />
+      <div className={styles.game}>
+        <GameSetup className={styles.gamescreen} />
+      </div>
     </Suspense>
   );
 };
