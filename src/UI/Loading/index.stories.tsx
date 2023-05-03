@@ -1,17 +1,14 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import LoadingOverlay from ".";
 
-export default {
-    title: "UI/LoadingOverlay",
-    component: LoadingOverlay,
-} as ComponentMeta<typeof LoadingOverlay>;
+const meta: Meta<typeof LoadingOverlay> = {
+  title: "UI/LoadingOverlay",
+  component: LoadingOverlay,
+};
+export default meta;
 
-const Template: ComponentStory<typeof LoadingOverlay> = (args) => (
-    <LoadingOverlay {...args} />
-);
+type Story = StoryObj<typeof LoadingOverlay>;
 
-export const Default = Template.bind({});
-Default.args = {
-    isLoading: true,
+export const Default: Story = {
+  render: () => <LoadingOverlay isLoading={true} />,
 };

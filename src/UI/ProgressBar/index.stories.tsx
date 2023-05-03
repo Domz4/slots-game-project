@@ -1,16 +1,13 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { ProgressBar } from ".";
 
-export default {
-    title: "UI/ProgressBar",
-    component: ProgressBar,
-} as ComponentMeta<typeof ProgressBar>;
+const meta: Meta<typeof ProgressBar> = {
+  title: "UI/ProgressBar",
+  component: ProgressBar,
+};
+export default meta;
+type Story = StoryObj<typeof ProgressBar>;
 
-const Template: ComponentStory<typeof ProgressBar> = (args) => (
-    <ProgressBar {...args} />
-);
-export const Default = Template.bind({});
-
-Default.args = {
-  progress: 50,
-}
+const Default: Story = {
+  render: () => <ProgressBar progress={50} total={100} />,
+};

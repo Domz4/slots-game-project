@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Auth } from "../types";
-import { login, addBalance as addBalanceAPI, setToken } from "../services/authAPI";
+import { login, addBalance as addBalanceAPI, setToken } from "../services/apiHandler";
 interface AuthState {
   auth: Auth | null;
   error: string | null;
@@ -41,6 +41,16 @@ export const authSlice = createSlice({
     setUser: (state, action: PayloadAction<Auth>) => {
       state.auth = action.payload;
     },
+    setBalance: (state, action: PayloadAction<Partial<Auth>>) => {
+      if (state.auth) {
+        state.auth = {
+          ...state.auth,
+          ...action.payload,
+        };
+      } else {
+        state.auth = action.payload as Auth;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, action: PayloadAction<Auth>) => {
@@ -61,5 +71,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { clearLoginError, logout, setUser } = authSlice.actions;
+export const { clearLoginError, logout, setUser, setBalance } = authSlice.actions;
 export default authSlice.reducer;

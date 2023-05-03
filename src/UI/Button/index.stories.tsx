@@ -1,32 +1,30 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryObj, Meta } from "@storybook/react";
 import { Button } from ".";
 
-export default {
-    title: "UI/Button",
-    component: Button,
-    argTypes: {
-        children: {
-            defaultValue: "Default text",
-        },
+const meta: Meta<typeof Button> = {
+  title: "UI/Button",
+  component: Button,
+  argTypes: {
+    children: {
+      defaultValue: "Default text",
     },
-} as ComponentMeta<typeof Button>;
-
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
-
-export const Primary = Template.bind({});
-export const Secondary = Template.bind({});
-export const SecondaryAlt = Template.bind({});
-
-Primary.args = {
+  },
+};
+export default meta;
+export const Default: Story = {
+  args: {
     variant: "primary",
-    children: "primary!",
+    children: "primary",
+  },
 };
-Secondary.args = {
-    variant: "secondary",
-    children: "secondary!",
+type Story = StoryObj<typeof Button>;
+
+export const Primary: Story = {
+  render: () => <Button variant="primary">primary</Button>,
 };
-SecondaryAlt.args = {
-    variant: "secondary-alt",
-    children: "secondary-alt!",
+export const Secondary: Story = {
+  render: () => <Button variant="secondary">secondary</Button>,
+};
+export const SecondaryAlt: Story = {
+  render: () => <Button variant="secondary-alt">third</Button>,
 };

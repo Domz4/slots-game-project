@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import LoadingOverlay from "../../UI/Loading";
 import styles from "./styles.module.css";
 const GameSetup = lazy(() =>
@@ -10,7 +10,9 @@ const GameSetup = lazy(() =>
 export const Game = () => {
   return (
     <Suspense fallback={<LoadingOverlay isLoading={true} />}>
-      <GameSetup className={styles.gamescreen} />
+      <div className={styles.game}>
+        <GameSetup className={styles.gamescreen} />
+      </div>
     </Suspense>
   );
 };

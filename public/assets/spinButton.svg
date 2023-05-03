@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg fill="#000000" version="1.1" id="Layer_1" width="800px" height="800px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="256" y1="0" x2="256" y2="512" id="gradient-0" gradientTransform="matrix(0.711648, -0.702536, 0.872172, 0.883484, -116.733971, 211.704414)">
+      <stop offset="0" style="stop-color: rgb(255, 240, 188);"/>
+      <stop offset="1" style="stop-color: rgb(229, 31, 76);"/>
+    </linearGradient>
+  </defs>
+  <path d="M256,0C114.609,0,0,114.609,0,256s114.609,256,256,256s256-114.609,256-256S397.391,0,256,0z M256,472 c-119.297,0-216-96.703-216-216S136.703,40,256,40s216,96.703,216,216S375.297,472,256,472z" style="paint-order: fill; fill: url(#gradient-0);"/>
+  <text style="fill: rgb(255, 217, 160); font-family: &quot;Fira Code&quot;; font-size: 117px; font-weight: 700; paint-order: fill; stroke-width: 15px; white-space: pre;" x="92.67" y="292.133">SPIN!</text>
+</svg>
